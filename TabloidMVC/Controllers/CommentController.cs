@@ -31,7 +31,7 @@ namespace TabloidMVC.Controllers
                 Post = post,
                 Comments = comments
             };
-            
+
             return View(vm);
         }
 
