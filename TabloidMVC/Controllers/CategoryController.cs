@@ -7,7 +7,7 @@ using System.Security.Claims;
 using TabloidMVC.Models;
 using TabloidMVC.Models.ViewModels;
 using TabloidMVC.Repositories;
-
+//Maintained by Brett Stoudt
 namespace TabloidMVC.Controllers
 {
     [Authorize]
@@ -22,7 +22,7 @@ namespace TabloidMVC.Controllers
             _postRepository = postRepository;
         }
 
-        //GET
+        //GET: Category/Index
         public IActionResult Index()
         {
             var categories = _categoryRepository.GetAll();
@@ -90,7 +90,12 @@ namespace TabloidMVC.Controllers
         public ActionResult Delete(int id)
         {
             Category category = _categoryRepository.GetCategoryById(id);
+            if (category == null)
+            {
 
+                return NotFound();
+
+            }
             return View(category);
         }
 

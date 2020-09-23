@@ -5,7 +5,7 @@ using Microsoft.VisualBasic;
 using System.Security.Claims;
 using TabloidMVC.Models.ViewModels;
 using TabloidMVC.Repositories;
-
+//Maintained by Brett Stoudt
 namespace TabloidMVC.Controllers
 {
     [Authorize]

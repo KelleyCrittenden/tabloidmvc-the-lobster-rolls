@@ -2,12 +2,14 @@
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using TabloidMVC.Models;
-
+//Maintained by Brett Stoudt
 namespace TabloidMVC.Repositories
 {
     public class CategoryRepository : BaseRepository, ICategoryRepository
     {
         public CategoryRepository(IConfiguration config) : base(config) { }
+
+        //List Category
         public List<Category> GetAll()
         {
             using (var conn = Connection)
