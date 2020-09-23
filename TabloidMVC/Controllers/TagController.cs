@@ -28,30 +28,32 @@ namespace TabloidMVC.Controllers
             return View(tags);
         }
 
-        // GET: TagController/Details/5
+        // GET: Tag/Details/5
         public ActionResult Details(int id)
         {
             return View();
         }
 
-        // GET: TagController/Create
+        // GET: Tag/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: TagController/Create
+        // POST: Tag/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult Create(Tag tag)
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                _tagRepository.AddTag(tag);
+
+                return RedirectToAction("Index");
             }
-            catch
+            catch (Exception)
             {
-                return View();
+                return View(tag);
             }
         }
 
