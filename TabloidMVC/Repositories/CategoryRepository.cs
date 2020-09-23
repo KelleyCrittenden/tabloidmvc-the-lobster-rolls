@@ -36,6 +36,25 @@ namespace TabloidMVC.Repositories
             }
         }
 
+        //Create Category
+        public void Add(Category category)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                        INSERT INTO Category ([Name])
+                        OUTPUT INSERTED.ID
+                        VALUES (@Name)";
+                    cmd.Parameters.AddWithValue("@Name", category.Name);
+
+                    category.Id = (int)cmd.ExecuteScalar();
+                }
+            }
+        }
+
         //Detail View for EDIT
         public Category GetCategoryById(int id)
         {
@@ -80,6 +99,27 @@ namespace TabloidMVC.Repositories
 
                     cmd.Parameters.AddWithValue("@id", category.Id);
                     cmd.Parameters.AddWithValue("@name", category.Name);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+        //DELETE CATEGORY
+        public void DeleteCategory(int categoryId)
+        {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                            DELETE FROM Category
+                            WHERE Id = @id
+                        ";
+
+                    cmd.Parameters.AddWithValue("@id", categoryId);
 
                     cmd.ExecuteNonQuery();
                 }

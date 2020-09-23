@@ -4,7 +4,7 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Post Categories</h1>
+<h1>Categories for Post</h1>
 
 <p>
     <a asp-action="Create">Add New Category</a>
@@ -32,7 +32,6 @@
             </td>
             <td>
                 @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
                 @Html.ActionLink("Delete", "Delete", new { id = item.Id })
             </td>
         </tr>

@@ -29,7 +29,7 @@ namespace TabloidMVC.Controllers
             return View(categories);
         }
 
-        //GET Cat for EDIT
+        //GET: Category/Edit/1
         public IActionResult Edit(int id)
         {
             var category = _categoryRepository.GetCategoryById(id);
@@ -42,7 +42,7 @@ namespace TabloidMVC.Controllers
             return View(category);
         }
 
-        //POST Cat for Edit
+        //POST: Categroy/Edit/1
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Edit(int id, Category category)
@@ -58,32 +58,56 @@ namespace TabloidMVC.Controllers
                 return View(category);
             }
         }
-        //GET
+        //GET: Category/Create
         public IActionResult Create()
         {
-            var vm = new PostCreateViewModel();
-            vm.CategoryOptions = _categoryRepository.GetAll();
-            return View(vm);
+           
+            return View();
         }
 
         //POST
         [HttpPost]
-        public IActionResult Create(PostCreateViewModel vm)
+        public IActionResult Create(Category newCategory)
+        {
+
+                try
+                {
+                
+                    _categoryRepository.Add(newCategory);
+
+                    return RedirectToAction("Index");
+                }
+                catch
+                {
+
+                    return View(newCategory);
+                }
+            
+        }
+
+
+        // GET: Category/Delete/5
+        public ActionResult Delete(int id)
+        {
+            Category category = _categoryRepository.GetCategoryById(id);
+
+            return View(category);
+        }
+
+        // POST: Category/Delete/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Delete(int id, Category category)
         {
             try
             {
-                vm.Post.CreateDateTime = DateAndTime.Now;
-                vm.Post.IsApproved = true;
-                vm.Post.UserProfileId = GetCurrentUserProfileId();
+                _categoryRepository.DeleteCategory(id);
 
-                _postRepository.Add(vm.Post);
-
-                return RedirectToAction("Details", new { id = vm.Post.Id });
-            } 
-            catch
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
             {
-                vm.CategoryOptions = _categoryRepository.GetAll();
-                return View(vm);
+                return View(category);
             }
         }
 
