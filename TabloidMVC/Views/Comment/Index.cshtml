@@ -1,65 +1,61 @@
-﻿@model IEnumerable<TabloidMVC.Models.Comment>
+﻿@model TabloidMVC.Models.ViewModels.PostCommentViewModel
 
 @{
-    ViewData["Title"] = "Comments";
+    ViewData["Title"] = "Index";
 }
 
-<h1>CommentIndex</h1>
+<h1>Index</h1>
+<h2>@Model.Post.Title</h2>
+
 
 <p>
     <a asp-action="Create">Create New</a>
 </p>
 <table class="table">
     <thead>
+        @foreach (Comment comment in Model.Comments)
+        { 
         <tr>
-            @*<th>
-                @Html.DisplayNameFor(model => model.Id)
-            </th>*@
-            @*<th>
-                @Html.DisplayNameFor(model => model.PostId)
+            <th>
+                @Html.DisplayNameFor(modelItem => comment.UserProfile.DisplayName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.UserProfileId)
-            </th>*@
-            <th>
-                @Html.DisplayNameFor(model => model.Subject)
+                @Html.DisplayNameFor(modelItem => comment.Subject)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Content)
+                @Html.DisplayNameFor(modelItem => comment.Content)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CreateDateTime)
+                @Html.DisplayNameFor(modelItem => comment.CreateDateTime)
             </th>
-            <th></th>
         </tr>
+        }
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@foreach (Comment comment in Model.Comments) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Id)
+                @Html.DisplayFor(modelItem => comment.UserProfile.DisplayName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.PostId)
+                @Html.DisplayFor(modelItem => comment.Subject)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.UserProfileId)
+                @Html.DisplayFor(modelItem => comment.Content)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Subject)
+                @Html.DisplayFor(modelItem => comment.CreateDateTime)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Content)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreateDateTime)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                @Html.ActionLink("Edit", "Edit", new { id = comment.Id }) |
+                @Html.ActionLink("Details", "Details", new { id = comment.Id }) |
+                @Html.ActionLink("Delete", "Delete", new { id = comment.Id })
             </td>
         </tr>
 }
     </tbody>
 </table>
+
+<div>
+    <a asp-controller="Post" asp-action="Detail">Back to List</a>
+</div>
