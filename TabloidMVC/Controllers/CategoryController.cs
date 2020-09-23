@@ -89,7 +89,7 @@ namespace TabloidMVC.Controllers
         // GET: Category/Delete/5
         public ActionResult Delete(int id)
         {
-            Category category = _categoryRepository.GetCategoryById(id);
+            var category = _categoryRepository.GetCategoryById(id);
             if (category == null)
             {
 
@@ -98,25 +98,26 @@ namespace TabloidMVC.Controllers
             }
             return View(category);
         }
+    
 
         // POST: Category/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, Category category)
+        public ActionResult Delete(int id)
+    {
+        try
         {
-            try
-            {
-                _categoryRepository.DeleteCategory(id);
+            _categoryRepository.DeleteCategory(id);
 
-                return RedirectToAction("Index");
-            }
-            catch (Exception ex)
-            {
-                return View(category);
-            }
+            return RedirectToAction("Index");
         }
+        catch (Exception ex)
+        {
+            return View(category);
+        }
+    }
 
-        private int GetCurrentUserProfileId()
+    private int GetCurrentUserProfileId()
         {
             string id = User.FindFirstValue(ClaimTypes.NameIdentifier);
             return int.Parse(id);

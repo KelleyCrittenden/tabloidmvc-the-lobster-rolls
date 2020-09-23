@@ -17,7 +17,7 @@ namespace TabloidMVC.Repositories
                 conn.Open();
                 using (var cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = "SELECT id, name FROM Category";
+                    cmd.CommandText = "SELECT id, [name],isDeleted  FROM Category WHERE isDeleted=0 ";
                     var reader = cmd.ExecuteReader();
 
                     var categories = new List<Category>();
@@ -108,7 +108,7 @@ namespace TabloidMVC.Repositories
         }
 
         //DELETE CATEGORY
-        public void DeleteCategory(int categoryId)
+        public void DeleteCategory(Category category)
         {
             using (SqlConnection conn = Connection)
             {
@@ -116,12 +116,18 @@ namespace TabloidMVC.Repositories
 
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = @"
-                            DELETE FROM Category
+                    cmd.CommandText = @"SELECT Id, Name, IsDeleted
+                            UPDATE Category
+                            SET 1 = @IsDeleted,
+                            [Name] = @Name
                             WHERE Id = @id
                         ";
 
-                    cmd.Parameters.AddWithValue("@id", categoryId);
+                    cmd.Parameters.AddWithValue("@id", category.Id);
+                    cmd.Parameters.AddWithValue("@IsDeleted", category.IsDeleted);
+                    cmd.Parameters.AddWithValue("@Name", category.Name);
+
+
 
                     cmd.ExecuteNonQuery();
                 }
