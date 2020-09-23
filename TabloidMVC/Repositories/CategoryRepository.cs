@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using TabloidMVC.Models;
 
@@ -33,6 +34,66 @@ namespace TabloidMVC.Repositories
                     return categories;
                 }
             }
+        }
+
+        //Detail View for EDIT
+        public Category GetCategoryById(int id)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = "SELECT id, name FROM Category WHERE id = @id";
+
+
+                    cmd.Parameters.AddWithValue("@id", id);
+                    var reader = cmd.ExecuteReader();
+
+                    Category category = null;
+
+                    if (reader.Read())
+                    {
+                        category = NewCategoryFromReader(reader);
+                    }
+
+                    reader.Close();
+
+                    return category;
+                }
+            }
+        }
+
+        //EDIT CATEGORY
+        public void UpdateCategory(Category category)
+        {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                            UPDATE Category
+                            SET [Name] = @name
+                            WHERE Id = @id";
+
+                    cmd.Parameters.AddWithValue("@id", category.Id);
+                    cmd.Parameters.AddWithValue("@name", category.Name);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+        //Declare Category Properties
+        private Category NewCategoryFromReader(SqlDataReader reader)
+        {
+            return new Category()
+            {
+                Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                Name = reader.GetString(reader.GetOrdinal("name")),
+            };
         }
     }
 }

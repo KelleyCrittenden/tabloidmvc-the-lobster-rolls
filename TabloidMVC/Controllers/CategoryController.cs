@@ -2,7 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.VisualBasic;
+using System;
 using System.Security.Claims;
+using TabloidMVC.Models;
 using TabloidMVC.Models.ViewModels;
 using TabloidMVC.Repositories;
 
@@ -20,27 +22,43 @@ namespace TabloidMVC.Controllers
             _postRepository = postRepository;
         }
 
+        //GET
         public IActionResult Index()
         {
             var categories = _categoryRepository.GetAll();
             return View(categories);
         }
 
-        public IActionResult Details(int id)
+        //GET Cat for EDIT
+        public IActionResult Edit(int id)
         {
-            var post = _postRepository.GetPublishedPostById(id);
-            if (post == null)
+            var category = _categoryRepository.GetCategoryById(id);
+            if (category == null)
             {
-                int userId = GetCurrentUserProfileId();
-                post = _postRepository.GetUserPostById(id, userId);
-                if (post == null)
-                {
+               
                     return NotFound();
-                }
+                
             }
-            return View(post);
+            return View(category);
         }
 
+        //POST Cat for Edit
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(int id, Category category)
+        {
+            try
+            {
+                _categoryRepository.UpdateCategory(category);
+
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                return View(category);
+            }
+        }
+        //GET
         public IActionResult Create()
         {
             var vm = new PostCreateViewModel();
@@ -48,6 +66,7 @@ namespace TabloidMVC.Controllers
             return View(vm);
         }
 
+        //POST
         [HttpPost]
         public IActionResult Create(PostCreateViewModel vm)
         {
