@@ -6,7 +6,7 @@ using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using TabloidMVC.Models;
 using TabloidMVC.Utils;
-//Maintained by Brett Stoudt
+
 namespace TabloidMVC.Repositories
 {
     public class PostRepository : BaseRepository, IPostRepository
