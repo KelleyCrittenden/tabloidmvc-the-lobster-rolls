@@ -68,6 +68,51 @@ namespace TabloidMVC.Repositories
             }
         }
 
+        public Comment GetCommentById(int id)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                      SELECT c.Id, c.PostId, c.UserProfileId, c.[Subject], c.Content, c.CreateDateTime, p.Title, u.DisplayName
+                        FROM Comment c
+                        JOIN Post p 
+                        ON c.PostId = p.Id
+                        JOIN UserProfile u
+                        ON c.UserProfileId = u.Id
+                        WHERE c.Id = @id 
+                       ";
+                    cmd.Parameters.AddWithValue("@id", id);
+
+                    var reader = cmd.ExecuteReader();
+
+                    if (reader.Read())
+                    {
+                        Comment comment = new Comment
+                        {
+                            Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                            Name = reader.GetString(reader.GetOrdinal("Name")),
+                            Email = reader.GetString(reader.GetOrdinal("Email")),
+                            NeighborhoodId = reader.GetInt32(reader.GetOrdinal("NeighborhoodId")),
+                            Address = reader.GetString(reader.GetOrdinal("Address")),
+                            Phone = reader.GetString(reader.GetOrdinal("Phone"))
+
+                        };
+
+                        reader.Close();
+                        return owner;
+                    }
+                    else
+                    {
+                        reader.Close();
+                        return null;
+                    }
+                }
+            }
+        }
+
         public void AddComment(Comment comment)
         {
             using (var conn = Connection)
