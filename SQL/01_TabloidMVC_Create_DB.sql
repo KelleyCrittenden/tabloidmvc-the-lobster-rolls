@@ -35,6 +35,7 @@ CREATE TABLE [UserProfile] (
   [CreateDateTime] datetime NOT NULL,
   [ImageLocation] nvarchar(255),
   [UserTypeId] integer NOT NULL,
+  [IsDeactivated] integer DEFAULT ((0)) NOT NULL,
 
   CONSTRAINT [FK_User_UserType] FOREIGN KEY ([UserTypeId]) REFERENCES [UserType] ([Id])
 )
@@ -65,10 +66,10 @@ CREATE TABLE [Post] (
   [ImageLocation] nvarchar(255),
   [CreateDateTime] datetime NOT NULL,
   [PublishDateTime] datetime,
-  [IsApproved] bit NOT NULL,
+  [IsApproved] bit DEFAULT ((1)) NOT NULL,
   [CategoryId] integer NOT NULL,
   [UserProfileId] integer NOT NULL,
-
+  [IsDeleted] integer DEFAULT ((0)) NOT NULL,
   CONSTRAINT [FK_Post_Category] FOREIGN KEY ([CategoryId]) REFERENCES [Category] ([Id]),
   CONSTRAINT [FK_Post_UserProfile] FOREIGN KEY ([UserProfileId]) REFERENCES [UserProfile] ([Id])
 )
@@ -87,7 +88,9 @@ CREATE TABLE [Comment] (
 
 CREATE TABLE [Tag] (
   [Id] integer PRIMARY KEY IDENTITY,
-  [Name] nvarchar(50) NOT NULL
+  [Name] nvarchar(50) NOT NULL,
+  [IsDeleted] integer DEFAULT ((0)) NOT NULL
+
 )
 
 CREATE TABLE [PostTag] (
