@@ -52,7 +52,7 @@ namespace TabloidMVC.Controllers
         }
 
         // GET: UserController/Create
-        public ActionResult Create()
+        public ActionResult Register()
         {
             return View();
         }
@@ -60,7 +60,7 @@ namespace TabloidMVC.Controllers
         // POST: UserController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult Register(UserProfile profile)
         {
             try
             {
