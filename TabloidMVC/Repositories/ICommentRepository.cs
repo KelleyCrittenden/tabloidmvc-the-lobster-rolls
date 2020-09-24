@@ -12,5 +12,6 @@ namespace TabloidMVC.Repositories
         //void AddComment(Post post, Comment comment);
         void AddComment(Comment comment);
         void UpdateComment(Comment comment);
+        Comment GetCommentById(int id);
     }
 }

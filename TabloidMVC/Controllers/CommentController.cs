@@ -72,7 +72,8 @@ namespace TabloidMVC.Controllers
         // GET: CommentsController/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            Comment comment = _commentRepository.GetCommentById(id);
+            return View(comment);
         }
 
         // POST: CommentsController/Edit/5
@@ -80,20 +81,19 @@ namespace TabloidMVC.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(Post post, Comment comment)
         {
-            int userId = GetCurrentUserProfileId();
-            comment.UserProfileId = userId;
-            comment.PostId = post.Id;
-            comment.CreateDateTime = DateTime.Now;
-            _commentRepository.UpdateComment(comment);
-            return RedirectToAction("Index", new { id = post.Id} );
-            //try
-            //{
-                
-            //}
-            //catch
-            //{
-            //    return View();
-            //}
+            try
+            {
+                int userId = GetCurrentUserProfileId();
+                comment.UserProfileId = userId;
+                comment.PostId = post.Id;
+                //comment.CreateDateTime = DateTime.Now;
+                _commentRepository.UpdateComment(comment);
+                return RedirectToAction("Index", new { id = post.Id });
+            }
+            catch
+            {
+                return View(comment);
+            }
         }
 
         // GET: CommentsController/Delete/5
