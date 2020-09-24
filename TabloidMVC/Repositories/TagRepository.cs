@@ -20,6 +20,7 @@ namespace TabloidMVC.Repositories
                 {
                     cmd.CommandText = @"SELECT id, [Name]
                                         FROM Tag
+                                        WHERE IsDeleted = 0
                                         ORDER BY Name ASC";
 
                     var reader = cmd.ExecuteReader();
@@ -105,10 +106,11 @@ namespace TabloidMVC.Repositories
                 using (var cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
-                            DELETE FROM Tag
+                            UPDATE Tag
+                            SET IsDeleted = @isDeleted
                             WHERE Id = @id
                         ";
-
+                    cmd.Parameters.AddWithValue("@isDeleted", 1);
                     cmd.Parameters.AddWithValue("@id", tagId);
 
                     cmd.ExecuteNonQuery();
@@ -137,7 +139,58 @@ namespace TabloidMVC.Repositories
             }
         }
 
+        public void ReinstateTag(int tagId)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                            UPDATE Tag
+                            SET IsDeleted = @isDeleted
+                            WHERE Id = @id
+                        ";
+                    cmd.Parameters.AddWithValue("@isDeleted", 0);
+                    cmd.Parameters.AddWithValue("@id", tagId);
 
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public List<Tag> GetDeletedTags()
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"SELECT id, [Name]
+                                        FROM Tag
+                                        WHERE IsDeleted = 1
+                                        ORDER BY Name ASC
+                                         ";
+
+                    var reader = cmd.ExecuteReader();
+
+                    var tags = new List<Tag>();
+
+                    while (reader.Read())
+                    {
+                        tags.Add(new Tag()
+                        {
+                            Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                            Name = reader.GetString(reader.GetOrdinal("Name")),
+                        });
+                    }
+
+                    reader.Close();
+
+                    return tags;
+                }
+            }
+        }
 
 
     }

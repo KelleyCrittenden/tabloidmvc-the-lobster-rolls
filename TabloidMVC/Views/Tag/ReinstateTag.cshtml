@@ -1,0 +1,30 @@
+﻿@model TabloidMVC.Models.Tag
+
+@{
+    ViewData["Title"] = "ReinstateTag";
+}
+
+<div class="container pt-5">
+
+    <div class="row justify-content-center">
+
+        <div class="card col-md-12 col-lg-8">
+
+            <h3 class="mt-3 text-primary text-center card-title">Are you sure you want to reinstate this tag?</h3>
+
+            <h5>
+                <dd class="mt-3 text-primary text-center card-title">
+                    @Html.DisplayFor(model => model.Name)
+                </dd>
+            </h5>
+            <form asp-action="ReinstateTag">
+                <input type="submit" value="Reinstate" class="btn btn-primary" />
+            </form>
+            <br />
+        </div>
+
+    </div>
+    <div>
+        <a asp-action="DeletedIndex">Back to List</a>
+    </div>
+</div>

@@ -99,5 +99,35 @@ namespace TabloidMVC.Controllers
                 return View(tag);
             }
         }
+
+        // GET: Deleted Tag List
+        public ActionResult DeletedIndex()
+        {
+            var tags = _tagRepository.GetDeletedTags();
+            return View(tags);
+        }
+
+        // GET: Tag/Delete/5
+        public ActionResult ReinstateTag(int id)
+        {
+            Tag tag = _tagRepository.GetTagById(id);
+            return View(tag);
+        }
+
+        // POST: TagController/Delete/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ReinstateTag(int id, Tag tag)
+        {
+            try
+            {
+                _tagRepository.ReinstateTag(id);
+                return RedirectToAction("DeletedIndex");
+            }
+            catch (Exception)
+            {
+                return View(tag);
+            }
+        }
     }
 }
