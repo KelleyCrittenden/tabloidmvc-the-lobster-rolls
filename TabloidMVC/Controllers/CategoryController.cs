@@ -86,8 +86,11 @@ namespace TabloidMVC.Controllers
         }
 
 
-        // GET: Category/Delete/5
-        public IActionResult Delete(int id)
+       
+
+
+        // GET: Owners/Delete/5
+        public ActionResult Delete(int id)
         {
             Category category = _categoryRepository.GetCategoryById(id);
             if (category == null)
@@ -95,26 +98,66 @@ namespace TabloidMVC.Controllers
 
                 return NotFound();
 
+            } else if (category.Id == 1)
+            {
+
+                return NotFound();
+
             }
             return View(category);
         }
-    
 
-        // POST: Category/Delete/5
+        // POST: Owners/Delete/5
         [HttpPost]
-        public IActionResult Delete(Category category)
-    {
-        try
+        [ValidateAntiForgeryToken]
+        public ActionResult Delete(int id, Category category)
         {
-            _categoryRepository.DeleteCategory(category.Id);
+            if (id == 1)
+            {
 
-            return RedirectToAction("Index");
+                return NotFound();
+
+            }
+            try
+            {
+                _categoryRepository.DeleteCategory(id);
+
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                return View(category);
+            }
         }
-        catch (Exception ex)
-        {
-            return View(category);
-        }
-    }
+
+    //    // GET: Category/Delete/5
+    //    public IActionResult Delete(int id)
+    //    {
+    //        Category category = _categoryRepository.GetCategoryById(id);
+    //        if (category == null)
+    //        {
+
+    //            return NotFound();
+
+    //        }
+    //        return View(category);
+    //    }
+
+    //    // POST: Category/Delete/5
+    //    [HttpPost]
+    //    public IActionResult Delete(Category category)
+    //{
+    //    try
+    //    {
+    //        _categoryRepository.DeleteCategory(category.Id);
+
+    //        return RedirectToAction("Index");
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        return View(category);
+    //    }
+    //}
 
     private int GetCurrentUserProfileId()
         {

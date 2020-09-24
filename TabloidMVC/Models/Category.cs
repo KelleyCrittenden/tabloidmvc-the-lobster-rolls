@@ -8,6 +8,5 @@ namespace TabloidMVC.Models
         [Required]
         public string Name { get; set; }
 
-        public int IsDeleted { get; set; }
     }
 }

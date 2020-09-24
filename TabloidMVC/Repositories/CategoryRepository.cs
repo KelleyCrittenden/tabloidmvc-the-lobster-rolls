@@ -17,7 +17,7 @@ namespace TabloidMVC.Repositories
                 conn.Open();
                 using (var cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = "SELECT id, [name],isDeleted  FROM Category WHERE isDeleted=0 ";
+                    cmd.CommandText = "SELECT id, [name] FROM Category ORDER BY name";
                     var reader = cmd.ExecuteReader();
 
                     var categories = new List<Category>();
@@ -26,7 +26,7 @@ namespace TabloidMVC.Repositories
                     {
                         categories.Add(new Category()
                         {
-                            Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                            Id = reader.GetInt32(reader.GetOrdinal("id")),
                             Name = reader.GetString(reader.GetOrdinal("name")),
                         });
                     }
@@ -108,6 +108,8 @@ namespace TabloidMVC.Repositories
         }
 
         //DELETE CATEGORY
+
+
         public void DeleteCategory(int id)
         {
             using (SqlConnection conn = Connection)
@@ -117,18 +119,55 @@ namespace TabloidMVC.Repositories
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
-                            UPDATE Category
-                            SET 
-                            IsDeleted = @IsDeleted
+                            UPDATE Post
+                            SET CategoryId = @categoryId
+                            WHERE CategoryId = @id
+                        ";
+                    cmd.Parameters.AddWithValue("@categoryId", 1);
+
+                    cmd.Parameters.AddWithValue("@id", id);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                            DELETE FROM Category
                             WHERE Id = @id
                         ";
-                    
-                    cmd.Parameters.AddWithValue("@IsDeleted", 1);
+
                     cmd.Parameters.AddWithValue("@id", id);
+
                     cmd.ExecuteNonQuery();
                 }
             }
         }
+        //public void DeleteCategory(int id)
+        //{
+        //    using (SqlConnection conn = Connection)
+        //    {
+        //        conn.Open();
+
+        //        using (SqlCommand cmd = conn.CreateCommand())
+        //        {
+        //            cmd.CommandText = @"
+        //                    UPDATE Category
+        //                    SET 
+        //                    IsDeleted = @IsDeleted
+        //                    WHERE Id = @id
+        //                ";
+                    
+        //            cmd.Parameters.AddWithValue("@IsDeleted", 1);
+        //            cmd.Parameters.AddWithValue("@id", id);
+        //            cmd.ExecuteNonQuery();
+        //        }
+        //    }
+        //}
 
         //Declare Category Properties
         private Category NewCategoryFromReader(SqlDataReader reader)
