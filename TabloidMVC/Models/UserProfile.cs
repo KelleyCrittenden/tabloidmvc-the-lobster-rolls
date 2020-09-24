@@ -19,6 +19,8 @@ namespace TabloidMVC.Models
         public UserType UserType { get; set; }
 
         public int IsDeactivated { get; set; }
+
+        
         public string FullName
         {
             get
