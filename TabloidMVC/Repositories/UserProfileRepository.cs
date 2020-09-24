@@ -101,5 +101,31 @@ namespace TabloidMVC.Repositories
                 }
             }
         }
+
+        public void AddUserProfile(UserProfile user)
+        {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                    INSERT INTO Owner ([Name], Email, Phone, Address, NeighborhoodId)
+                    OUTPUT INSERTED.ID
+                    VALUES (@name, @email, @phoneNumber, @address, @neighborhoodId);
+                ";
+
+                    cmd.Parameters.AddWithValue("@name", owner.Name);
+                    cmd.Parameters.AddWithValue("@email", owner.Email);
+                    cmd.Parameters.AddWithValue("@phoneNumber", owner.Phone);
+                    cmd.Parameters.AddWithValue("@address", owner.Address);
+                    cmd.Parameters.AddWithValue("@neighborhoodId", owner.NeighborhoodId);
+
+                    int id = (int)cmd.ExecuteScalar();
+
+                    owner.Id = id;
+                }
+            }
+        }
     }
 }
