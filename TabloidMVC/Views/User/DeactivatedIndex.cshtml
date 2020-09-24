@@ -8,11 +8,9 @@
 <div class="container pt-5">
     <h1>Index</h1>
     <p>
-        <a class="btn btn-primary" asp-action="Create">Create New</a>  
         
-        <a asp-action="DeactivatedIndex" class="btn btn-outline-primary mx-1" title="DeactivatedIndex">
-            <i>View Deactivated Users</i>
-        </a>
+        
+       
         
 
     </p>
@@ -55,12 +53,12 @@
                         <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-primary mx-1" title="View">
                             <i class="fas fa-eye"></i>
                         </a>
-                      
-                            <a asp-action="Deactivate" asp-route-id="@item.Id" class="btn btn-outline-primary mx-1" title="Deactivate">
-                                <i class="fas fa-trash"></i>
-                            </a>
-                        
-                      
+
+                        <a asp-action="Reactivate" asp-route-id="@item.Id" class="btn btn-outline-primary mx-1" title="Reactivate">
+                            <i class="fas fa-pencil-alt"></i>
+                        </a>
+
+
                     </td>
                 </tr>
             }

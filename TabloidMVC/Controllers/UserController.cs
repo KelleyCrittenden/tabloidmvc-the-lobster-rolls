@@ -27,11 +27,26 @@ namespace TabloidMVC.Controllers
             List<UserProfile> userProfiles = _userRepo.GetAllUserProfiles();
             return View(userProfiles);
         }
+        public ActionResult DeactivatedIndex()
+        {
+            List<UserProfile> userProfiles = _userRepo.GetAllDeactivatedUserProfiles();
+            return View(userProfiles);
+        }
 
         // GET: UserController/Details/5
         public ActionResult Details(int id)
         {
-            return View();
+            var user = _userRepo.GetUserProfileById(id);
+            if (user != null)
+            {
+                return View(user);
+                
+            }
+            else
+            {
+                return NotFound();
+            }
+           
         }
 
         // GET: UserController/Create
@@ -77,23 +92,63 @@ namespace TabloidMVC.Controllers
         }
 
         // GET: UserController/Delete/5
-        public ActionResult Delete(int id)
+        public ActionResult Deactivate(int id)
         {
-            return View();
+            var user = _userRepo.GetUserProfileById(id);
+            if (user != null)
+            {
+                return View(user);
+
+            }
+            else
+            {
+                return NotFound();
+            }
         }
 
         // POST: UserController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public ActionResult Deactivate(UserProfile profile )
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                _userRepo.DeactivateProfile(profile.Id);
+                return RedirectToAction("Index");
             }
             catch
             {
-                return View();
+                return View(profile);
+            }
+        }
+
+        public ActionResult Reactivate(int id)
+        {
+            var user = _userRepo.GetUserProfileById(id);
+            if (user != null)
+            {
+                return View(user);
+
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+
+      
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Reactivate(UserProfile profile)
+        {
+            try
+            {
+                _userRepo.ReactivateProfile(profile.Id);
+                return RedirectToAction("Index");
+            }
+            catch
+            {
+                return View(profile);
             }
         }
     }
