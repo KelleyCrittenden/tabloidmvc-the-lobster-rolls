@@ -1,21 +1,29 @@
 ﻿@model TabloidMVC.Models.ViewModels.PostCreateViewModel
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Edit";
 }
 
-
-
+<hr />
 <div class="container pt-5">
     <div class="row justify-content-center">
         <div class="card col-md-12 col-lg-8">
-            <h3 class="mt-3 text-primary text-center card-title">What do you have to say?</h3>
-            <form class="mt-5 card-body" asp-action="Create">
+            <h3 class="mt-3 text-primary text-center card-title">What do you want to edit?</h3>
+            <form class="mt-5 card-body" asp-action="Edit">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <input asp-for="Post.Id" type="hidden" class="form-control" />
+
+                </div>
                 <div class="form-group">
                     <label asp-for="Post.Title" class="control-label"></label>
                     <input asp-for="Post.Title" class="form-control" />
                     <span asp-validation-for="Post.Title" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Post.Content" class="control-label"></label>
+                    <input asp-for="Post.Content" class="form-control" />
+                    <span asp-validation-for="Post.Content" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label asp-for="Post.ImageLocation" class="control-label"></label>
@@ -27,32 +35,35 @@
                     <input asp-for="Post.PublishDateTime" max="@DateTime.Now.ToShortDateString()" class="form-control" />
                     <span asp-validation-for="Post.PublishDateTime" class="text-danger"></span>
                 </div>
+                <div class="form-group form-check">
+
+                    <input class="form-check-input" type="hidden" asp-for="Post.IsApproved" />
+
+                </div>
                 <div class="form-group">
                     <label asp-for="Post.CategoryId" class="control-label"></label>
                     <select asp-for="Post.CategoryId" class="form-control">
-                        @foreach (var category in Model.CategoryOptions)
+
+                        @foreach (Category category in Model.CategoryOptions)
                         {
                             <option value="@category.Id">@category.Name</option>
                         }
                     </select>
                     <span asp-validation-for="Post.CategoryId" class="text-danger"></span>
                 </div>
+
                 <div class="form-group">
-                    <label asp-for="Post.Content" class="control-label"></label>
-                    <textarea asp-for="Post.Content" rows="15" class="form-control post__content-input"></textarea>
-                    <span asp-validation-for="Post.Content" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <input type="submit" value="SAVE" class="btn btn-primary btn-block" />
+                    <input type="submit" value="Save" class="btn btn-primary" />
                 </div>
             </form>
         </div>
-    </div>
 
+    </div>
     <div>
-        <a asp-action="Index">Cancel</a>
+        <a asp-action="UserIndex">Cancel</a>
     </div>
 </div>
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
