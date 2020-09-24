@@ -104,26 +104,25 @@ namespace TabloidMVC.Repositories
 
         public void AddUserProfile(UserProfile user)
         {
-            using (SqlConnection conn = Connection)
+            using (var conn = Connection)
             {
                 conn.Open();
-                using (SqlCommand cmd = conn.CreateCommand())
+                using (var cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
-                    INSERT INTO Owner ([Name], Email, Phone, Address, NeighborhoodId)
+                    INSERT INTO UserProfile (FirstName, LastName, DisplayName, Email)
                     OUTPUT INSERTED.ID
-                    VALUES (@name, @email, @phoneNumber, @address, @neighborhoodId);
+                    VALUES (@firstName, @lastName, @displayName, @email);
                 ";
 
-                    cmd.Parameters.AddWithValue("@name", owner.Name);
-                    cmd.Parameters.AddWithValue("@email", owner.Email);
-                    cmd.Parameters.AddWithValue("@phoneNumber", owner.Phone);
-                    cmd.Parameters.AddWithValue("@address", owner.Address);
-                    cmd.Parameters.AddWithValue("@neighborhoodId", owner.NeighborhoodId);
+                    cmd.Parameters.AddWithValue("@firstName", user.FirstName);
+                    cmd.Parameters.AddWithValue("@lastName", user.LastName);
+                    cmd.Parameters.AddWithValue("@displayName", user.DisplayName);
+                    cmd.Parameters.AddWithValue("@email", user.Email);
 
                     int id = (int)cmd.ExecuteScalar();
 
-                    owner.Id = id;
+                    user.Id = id;
                 }
             }
         }
