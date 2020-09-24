@@ -41,6 +41,9 @@
                                     <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" asp-area="" asp-controller="User" asp-action="Index">USER PROFILES</a>
                                 </li>
                                 <li class="nav-item mx-0 mx-lg-1">
+                                    <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" asp-area="" asp-controller="Category" asp-action="Index">CATEGORY MANAGMENT</a>
+                                </li>
+                                <li class="nav-item mx-0 mx-lg-1">
                                     <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" asp-area="" asp-controller="Account" asp-action="Logout">LOGOUT</a>
                                 </li>
                             }
@@ -59,13 +62,14 @@
                                     <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" asp-area="" asp-controller="Account" asp-action="Logout">LOGOUT</a>
                                 </li>
                             }
-                        
+
+
                         }
                         else
                         {
-                        <li class="nav-item mx-0 mx-lg-1">
-                            <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" asp-area="" asp-controller="Account" asp-action="Login">LOGIN</a>
-                        </li>
+                            <li class="nav-item mx-0 mx-lg-1">
+                                <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" asp-area="" asp-controller="Account" asp-action="Login">LOGIN</a>
+                            </li>
                         }
                     </ul>
                 </div>
