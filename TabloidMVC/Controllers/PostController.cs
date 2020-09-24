@@ -13,6 +13,7 @@ namespace TabloidMVC.Controllers
     {
         private readonly IPostRepository _postRepository;
         private readonly ICategoryRepository _categoryRepository;
+        
 
         public PostController(IPostRepository postRepository, ICategoryRepository categoryRepository)
         {
