@@ -26,7 +26,7 @@ namespace TabloidMVC.Controllers
         {
             
             List<Comment> comments = _commentRepository.GetAllCommentsByPostId(id);
-
+            
             PostCommentViewModel vm = new PostCommentViewModel
             {
                 Post = _postRepository.GetPublishedPostById(id),
@@ -54,21 +54,22 @@ namespace TabloidMVC.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(int id, Comment comment)
         {
+            //Post post = _postRepository.GetPublishedPostById(id);
+            int userId = GetCurrentUserProfileId();
+            comment.UserProfileId = userId;
+            comment.PostId = id;
+            comment.CreateDateTime = DateTime.Now;
+            _commentRepository.AddComment(comment);
+            return RedirectToAction("Index");
 
-            try
-            {
-                Post post = _postRepository.GetPublishedPostById(id);
-                int userProfileId = GetCurrentUserProfileId();
-                comment.UserProfileId = userProfileId;
-                comment.PostId = post.Id;
-                comment.CreateDateTime = DateTime.Now;
-                _commentRepository.AddComment(post, comment);
-                return RedirectToAction("Index", "Comment");
-            }
-            catch
-            {
-                return View(comment);
-            }
+            //try
+            //{
+              
+            //}
+            //catch
+            //{
+            //    return View();
+            //}
         }
 
         // GET: CommentsController/Edit/5

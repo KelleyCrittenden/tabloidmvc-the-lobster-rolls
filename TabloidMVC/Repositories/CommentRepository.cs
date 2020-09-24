@@ -12,7 +12,7 @@ namespace TabloidMVC.Repositories
     {
         public CommentRepository(IConfiguration config) : base(config) { }
 
-        public List<Comment> GetAllCommentsByPostId(int postId)
+        public List<Comment> GetAllCommentsByPostId(int id)
         {
             using (var conn = Connection)
             {
@@ -22,18 +22,18 @@ namespace TabloidMVC.Repositories
                     cmd.CommandText = @"
                       SELECT c.Id, c.PostId, c.UserProfileId, c.[Subject], c.Content, c.CreateDateTime, p.Title, u.DisplayName
                         FROM Comment c
-                        LEFT JOIN Post p 
+                        JOIN Post p 
                         ON c.PostId = p.Id
-                        LEFT JOIN UserProfile u
+                        JOIN UserProfile u
                         ON c.UserProfileId = u.Id
                         WHERE c.PostId = @id
                         ORDER BY CreateDateTime DESC
                        ";
-                    cmd.Parameters.AddWithValue("@id", postId);
-                    
-                    var reader = cmd.ExecuteReader();
+                    cmd.Parameters.AddWithValue("@id", id);
 
                     var comments = new List<Comment>();
+
+                    var reader = cmd.ExecuteReader();
 
                     while (reader.Read())
                     {
@@ -68,7 +68,7 @@ namespace TabloidMVC.Repositories
             }
         }
 
-        public void AddComment(Post post, Comment comment)
+        public void AddComment(Comment comment)
         {
             using (var conn = Connection)
             {
@@ -78,7 +78,7 @@ namespace TabloidMVC.Repositories
                     cmd.CommandText = @"INSERT INTO Comment (PostId, UserProfileId, Subject, Content, CreateDateTime)
                                         OUTPUT INSERTED.ID
                                         VALUES (@postId, @userProfileId, @subject, @content, @createDateTime)";
-                    cmd.Parameters.AddWithValue("@postId", post.Id);
+                    cmd.Parameters.AddWithValue("@postId", comment.PostId);
                     cmd.Parameters.AddWithValue("@userProfileId", comment.UserProfileId);
                     cmd.Parameters.AddWithValue("@subject", comment.Subject);
                     cmd.Parameters.AddWithValue("@content", comment.Content);
