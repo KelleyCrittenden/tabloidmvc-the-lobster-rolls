@@ -15,14 +15,14 @@ SET IDENTITY_INSERT [Category] OFF
 
 
 SET IDENTITY_INSERT [Tag] ON
-INSERT INTO [Tag] ([Id], [Name])
-VALUES (1, 'C#'), (2, 'JavaScript'), (3, 'Cyclopean Terrors'), (4, 'Family');
+INSERT INTO [Tag] ([Id], [Name], [IsDeleted])
+VALUES (1, 'C#', 0), (2, 'JavaScript', 0), (3, 'Cyclopean Terrors', 0), (4, 'Family', 0);
 SET IDENTITY_INSERT [Tag] OFF
 
 SET IDENTITY_INSERT [UserProfile] ON
 INSERT INTO [UserProfile] (
-	[Id], [FirstName], [LastName], [DisplayName], [Email], [CreateDateTime], [ImageLocation], [UserTypeId])
-VALUES (1, 'Admina', 'Strator', 'admin', 'admin@example.com', SYSDATETIME(), NULL, 1);
+	[Id], [FirstName], [LastName], [DisplayName], [Email], [CreateDateTime], [ImageLocation], [UserTypeId], [IsDeactivated])
+VALUES (1, 'Admina', 'Strator', 'admin', 'admin@example.com', SYSDATETIME(), NULL, 1, 0);
 SET IDENTITY_INSERT [UserProfile] OFF
 
 SET IDENTITY_INSERT [Post] ON
