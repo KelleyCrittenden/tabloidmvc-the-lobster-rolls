@@ -24,12 +24,12 @@ namespace TabloidMVC.Controllers
         // GET: CommentsController
         public ActionResult Index(int id)
         {
-            Post post = _postRepository.GetPublishedPostById(id);
-            List<Comment> comments = _commentRepository.GetAllCommentsByPostId(post.Id);
+            
+            List<Comment> comments = _commentRepository.GetAllCommentsByPostId(id);
 
             PostCommentViewModel vm = new PostCommentViewModel
             {
-                Post = post,
+                Post = _postRepository.GetPublishedPostById(id),
                 Comments = comments
             };
 
@@ -63,11 +63,11 @@ namespace TabloidMVC.Controllers
                 comment.PostId = post.Id;
                 comment.CreateDateTime = DateTime.Now;
                 _commentRepository.AddComment(post, comment);
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "Comment");
             }
             catch
             {
-                return View();
+                return View(comment);
             }
         }
 
