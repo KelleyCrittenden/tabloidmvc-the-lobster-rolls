@@ -13,14 +13,15 @@ namespace TabloidMVC.Models
 
         [Required]
         public string Content { get; set; }
-
+        [Required]
         [DisplayName("Header Image URL")]
         public string ImageLocation { get; set; }
-
+        [Required]
         public DateTime CreateDateTime { get; set; }
 
         [DisplayName("Published")]
         [DataType(DataType.Date)]
+        
         public DateTime? PublishDateTime { get; set; }
 
         public bool IsApproved { get; set; }
@@ -33,5 +34,17 @@ namespace TabloidMVC.Models
         [DisplayName("Author")]
         public int UserProfileId { get; set; }
         public UserProfile UserProfile { get; set; }
+
+        
+
+        public double calculateReadTime()
+        {
+            double time = 0;
+            double test = Content.Split(" ").Length;
+            time =  test / 265;
+            time = Math.Ceiling(time);
+
+            return time;
+        }
     }
 }
