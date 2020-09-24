@@ -24,12 +24,13 @@ namespace TabloidMVC.Controllers
         // GET: CommentsController
         public ActionResult Index(int id)
         {
-            
+            Post post = _postRepository.GetPublishedPostById(id);
             List<Comment> comments = _commentRepository.GetAllCommentsByPostId(id);
-            
+
             PostCommentViewModel vm = new PostCommentViewModel
             {
-                Post = _postRepository.GetPublishedPostById(id),
+               
+                Post = post,
                 Comments = comments
             };
 
@@ -52,24 +53,22 @@ namespace TabloidMVC.Controllers
         // POST: CommentsController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(int id, Comment comment)
+        public ActionResult Create(Post post, Comment comment)
         {
-            //Post post = _postRepository.GetPublishedPostById(id);
-            int userId = GetCurrentUserProfileId();
-            comment.UserProfileId = userId;
-            comment.PostId = id;
-            comment.CreateDateTime = DateTime.Now;
-            _commentRepository.AddComment(comment);
-            return RedirectToAction("Index");
-
-            //try
-            //{
-              
-            //}
-            //catch
-            //{
-            //    return View();
-            //}
+            
+            try
+            {
+                int userId = GetCurrentUserProfileId();
+                comment.UserProfileId = userId;
+                comment.PostId = post.Id;
+                comment.CreateDateTime = DateTime.Now;
+                _commentRepository.AddComment(comment);
+                return RedirectToAction("Index", new { id = post.Id });
+            }
+            catch
+            {
+                return View();
+            }
         }
 
         // GET: CommentsController/Edit/5
@@ -81,16 +80,22 @@ namespace TabloidMVC.Controllers
         // POST: CommentsController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(int id, Comment comment)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            int userId = GetCurrentUserProfileId();
+            comment.UserProfileId = userId;
+            //comment.PostId =
+            comment.CreateDateTime = DateTime.Now;
+            _commentRepository.UpdateComment(comment);
+            return RedirectToAction(nameof(Index));
+            //try
+            //{
+                
+            //}
+            //catch
+            //{
+            //    return View();
+            //}
         }
 
         // GET: CommentsController/Delete/5
