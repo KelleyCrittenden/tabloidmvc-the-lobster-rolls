@@ -102,7 +102,7 @@ namespace TabloidMVC.Repositories
             }
         }
 
-        public void AddUserProfile(UserProfile user)
+        public void Add(UserProfile user)
         {
             using (var conn = Connection)
             {

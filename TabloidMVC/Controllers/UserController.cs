@@ -43,16 +43,16 @@ namespace TabloidMVC.Controllers
         // POST: UserController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult Create(UserProfile user)
         {
             try
             {
 
-                vm.Post.CreateDateTime = DateAndTime.Now;
-                vm.Post.IsApproved = true;
-                vm.Post.UserProfileId = GetCurrentUserProfileId();
+                user.CreateDateTime = DateAndTime.Now;
+                user.UserTypeId = 2;
+                
 
-                _postRepository.Add(vm.Post);
+                _userRepo.Add(user);
                 return RedirectToAction(nameof(Index));
             }
             catch
