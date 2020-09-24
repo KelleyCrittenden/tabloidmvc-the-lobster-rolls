@@ -108,7 +108,7 @@ namespace TabloidMVC.Repositories
         }
 
         //DELETE CATEGORY
-        public void DeleteCategory(Category category)
+        public void DeleteCategory(int id)
         {
             using (SqlConnection conn = Connection)
             {
@@ -116,19 +116,15 @@ namespace TabloidMVC.Repositories
 
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = @"SELECT Id, Name, IsDeleted
+                    cmd.CommandText = @"
                             UPDATE Category
-                            SET 1 = @IsDeleted,
-                            [Name] = @Name
+                            SET 
+                            IsDeleted = @IsDeleted
                             WHERE Id = @id
                         ";
-
-                    cmd.Parameters.AddWithValue("@id", category.Id);
-                    cmd.Parameters.AddWithValue("@IsDeleted", category.IsDeleted);
-                    cmd.Parameters.AddWithValue("@Name", category.Name);
-
-
-
+                    
+                    cmd.Parameters.AddWithValue("@IsDeleted", 1);
+                    cmd.Parameters.AddWithValue("@id", id);
                     cmd.ExecuteNonQuery();
                 }
             }

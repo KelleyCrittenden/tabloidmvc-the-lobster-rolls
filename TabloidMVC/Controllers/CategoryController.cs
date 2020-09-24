@@ -87,9 +87,9 @@ namespace TabloidMVC.Controllers
 
 
         // GET: Category/Delete/5
-        public ActionResult Delete(int id)
+        public IActionResult Delete(int id)
         {
-            var category = _categoryRepository.GetCategoryById(id);
+            Category category = _categoryRepository.GetCategoryById(id);
             if (category == null)
             {
 
@@ -102,12 +102,11 @@ namespace TabloidMVC.Controllers
 
         // POST: Category/Delete/5
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id)
+        public IActionResult Delete(Category category)
     {
         try
         {
-            _categoryRepository.DeleteCategory(id);
+            _categoryRepository.DeleteCategory(category.Id);
 
             return RedirectToAction("Index");
         }
