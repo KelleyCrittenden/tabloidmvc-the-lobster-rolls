@@ -76,7 +76,9 @@ namespace TabloidMVC.Controllers
 
         public IActionResult Edit(int id)
         {
-            var post = _postRepository.GetPublishedPostById(id);
+            var post = new Post();
+            int userId = GetCurrentUserProfileId();
+            post = _postRepository.GetUserPostById(id, userId);
             var categories = _categoryRepository.GetAll();
             PostCreateViewModel vm = new PostCreateViewModel
             {

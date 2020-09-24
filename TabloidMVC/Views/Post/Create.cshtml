@@ -24,7 +24,7 @@
                 </div>
                 <div class="form-group">
                     <label asp-for="Post.PublishDateTime" class="control-label"></label>
-                    <input asp-for="Post.PublishDateTime" class="form-control" />
+                    <input asp-for="Post.PublishDateTime" max="@DateTime.Now.ToShortDateString()" class="form-control" />
                     <span asp-validation-for="Post.PublishDateTime" class="text-danger"></span>
                 </div>
                 <div class="form-group">
