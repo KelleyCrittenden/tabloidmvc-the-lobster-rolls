@@ -4,13 +4,11 @@
     ViewData["Title"] = "Index";
 }
 
-@*<h1>Comments For:</h1>*@
 <h2>@Model.Post.Title</h2>
+<div>
+    <a asp-controller="Post" asp-action="Details" asp-route-id="@Model.Post.Id">Back to Post</a>
+</div>
 
-
-<p>
-    <a class="btn btn-primary" asp-action="Create">New Comment</a>
-</p>
 <table class="table">
     @*<thead>
         <tr>
@@ -44,7 +42,6 @@
                 Date Written
             </th>
         </tr>
-
     </thead>
     <tbody>
         @foreach (Comment comment in Model.Comments)
@@ -78,6 +75,4 @@
     </tbody>
 </table>
 
-<div>
-    <a asp-controller="Post" asp-action="Details" asp-route-id="@Model.Post.Id">Back to List</a>
-</div>
+

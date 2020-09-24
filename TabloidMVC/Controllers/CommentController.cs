@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -24,7 +25,7 @@ namespace TabloidMVC.Controllers
         public ActionResult Index(int id)
         {
             Post post = _postRepository.GetPublishedPostById(id);
-            List<Comment> comments = _commentRepository.GetAllCommentsByPostId(id);
+            List<Comment> comments = _commentRepository.GetAllCommentsByPostId(post.Id);
 
             PostCommentViewModel vm = new PostCommentViewModel
             {
@@ -51,11 +52,18 @@ namespace TabloidMVC.Controllers
         // POST: CommentsController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult Create(int id, Comment comment)
         {
+
             try
             {
-                return RedirectToAction(nameof(Index));
+                Post post = _postRepository.GetPublishedPostById(id);
+                int userProfileId = GetCurrentUserProfileId();
+                comment.UserProfileId = userProfileId;
+                comment.PostId = post.Id;
+                comment.CreateDateTime = DateTime.Now;
+                _commentRepository.AddComment(post, comment);
+                return RedirectToAction("Index");
             }
             catch
             {
@@ -103,6 +111,12 @@ namespace TabloidMVC.Controllers
             {
                 return View();
             }
+        }
+
+        private int GetCurrentUserProfileId()
+        {
+            string id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            return int.Parse(id);
         }
     }
 }
