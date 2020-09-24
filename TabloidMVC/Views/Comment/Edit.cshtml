@@ -15,16 +15,9 @@
             <div class="form-group">
                 <input asp-for="Id" type="hidden" class="form-control" />
             </div>
-            @*<div class="form-group">
-                <label asp-for="PostId" class="control-label"></label>
-                <input asp-for="PostId" class="form-control" />
-                <span asp-validation-for="PostId" class="text-danger"></span>
-            </div>
             <div class="form-group">
-                <label asp-for="UserProfileId" class="control-label"></label>
-                <input asp-for="UserProfileId" class="form-control" />
-                <span asp-validation-for="UserProfileId" class="text-danger"></span>
-            </div>*@
+                <input asp-for="PostId" type="hidden" class="form-control" />
+            </div>
             <div class="form-group">
                 <label asp-for="Subject" class="control-label"></label>
                 <input asp-for="Subject" class="form-control" />
@@ -35,20 +28,14 @@
                 <input asp-for="Content" class="form-control" />
                 <span asp-validation-for="Content" class="text-danger"></span>
             </div>
-            @*<div class="form-group">
-                <label asp-for="CreateDateTime" class="control-label"></label>
-                <input asp-for="CreateDateTime" class="form-control" />
-                <span asp-validation-for="CreateDateTime" class="text-danger"></span>
-            </div>*@
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
+           
+            @Html.ActionLink("Back To List", "Index", "Comment", new { id = @Model.PostId })
+          
         </form>
     </div>
-</div>
-
-<div>
-    <a asp-controller="Comment" asp-action="Index" asp-action-id="@Model.PostId">Back to List</a>
 </div>
 
 @section Scripts {
