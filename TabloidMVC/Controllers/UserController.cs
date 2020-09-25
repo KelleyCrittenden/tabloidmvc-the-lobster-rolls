@@ -75,26 +75,36 @@ namespace TabloidMVC.Controllers
         {
             try
             {
-                List<UserProfile> admins = _userRepo.GetAllAdminUserProfiles();
-                if(admins.Count <= 1)
-                {
-                    ModelState.AddModelError("Profile.UserTypeId", "There can not be less than 1 Admin. Must give Admin rights to someone else before this action will work.");
-                    UserProfile profile = _userRepo.GetUserProfileById(vm.Profile.Id);
-                    List<UserType> types = _userTypeReop.GetAllUserTypes();
 
-                    UserProfileViewModel upvm = new UserProfileViewModel
+                if (vm.Profile.UserTypeId == 2)
+                {
+
+
+                    List<UserProfile> admins = _userRepo.GetAllAdminUserProfiles();
+                    if (admins.Count <= 1)
                     {
-                        Profile = profile,
-                        UserTypes = types
-                    };
-                    return View(upvm);
+                        ModelState.AddModelError("Profile.UserTypeId", "There can not be less than 1 Admin. Must give Admin rights to someone else before this action will work.");
+                        UserProfile profile = _userRepo.GetUserProfileById(vm.Profile.Id);
+                        List<UserType> types = _userTypeReop.GetAllUserTypes();
+
+                        UserProfileViewModel upvm = new UserProfileViewModel
+                        {
+                            Profile = profile,
+                            UserTypes = types
+                        };
+                        return View(upvm);
+                    }
+                    else
+                    {
+                        _userRepo.UpdateUserType(vm.Profile.Id, vm.Profile.UserTypeId);
+                        return RedirectToAction("Index");
+                    }
                 }
                 else
                 {
                     _userRepo.UpdateUserType(vm.Profile.Id, vm.Profile.UserTypeId);
                     return RedirectToAction("Index");
                 }
-               
             }
             catch
             {
@@ -106,7 +116,7 @@ namespace TabloidMVC.Controllers
         // GET: UserController/Delete/5
         public ActionResult Deactivate(int id)
         {
-            var user = _userRepo.GetUserProfileById(id);
+            UserProfile user = _userRepo.GetUserProfileById(id);
             if (user != null)
             {
                 return View(user);
@@ -123,20 +133,31 @@ namespace TabloidMVC.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Deactivate(UserProfile profile )
         {
+            UserProfile userId = _userRepo.GetUserProfileById(profile.Id);
             try
             {
-                List<UserProfile> admins = _userRepo.GetAllAdminUserProfiles();
-                if (admins.Count <= 1)
+                if(userId.UserTypeId == 1)
                 {
-                    ModelState.AddModelError("UserType", "There can not be less than 1 Admin. Must give Admin rights to someone else before this action will work.");
-                    var user = _userRepo.GetUserProfileById(profile.Id);
-                    return View(user);
+                    List<UserProfile> admins = _userRepo.GetAllAdminUserProfiles();
+                    if (admins.Count <= 1)
+                    {
+                        ModelState.AddModelError("UserType", "There can not be less than 1 Admin. Must give Admin rights to someone else before this action will work.");
+                        var user = _userRepo.GetUserProfileById(profile.Id);
+                        return View(user);
+                    }
+                    else
+                    {
+                        _userRepo.DeactivateProfile(profile.Id);
+                        return RedirectToAction("Index");
+                    }
                 }
                 else
                 {
                     _userRepo.DeactivateProfile(profile.Id);
                     return RedirectToAction("Index");
+
                 }
+
                
             }
             catch
