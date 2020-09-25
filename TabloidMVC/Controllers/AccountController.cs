@@ -67,7 +67,7 @@ namespace TabloidMVC.Controllers
         // POST: UserController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async void Register(UserProfile profile)
+        public Task<IActionResult> Register(UserProfile profile)
         {
 
             profile.CreateDateTime = DateAndTime.Now;
@@ -77,8 +77,7 @@ namespace TabloidMVC.Controllers
             {
                 Email = profile.Email
             };
-           await  Login(userLogin);
-            RedirectToAction("Index", "Post");
+        return Login(userLogin);
 
 
 
