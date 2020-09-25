@@ -40,6 +40,7 @@ namespace TabloidMVC.Controllers
         // GET: PostTagController/Details/5
         public ActionResult Details(int id)
         {
+
             return View();
         }
 
@@ -125,21 +126,59 @@ namespace TabloidMVC.Controllers
         // GET: PostTagController/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+
+            {
+                IEnumerable<PostTag> postTags = _postTagRepository.GetAllPostTagsByPostId(id);
+
+                List<int> postTagsSelected = new List<int>();
+
+                //creating an instance of the view model class
+                PostTagFormViewModel vm = new PostTagFormViewModel()
+                {
+                    PostTag = new PostTag(),
+                    PostTagsSelected = postTagsSelected,
+                    PostId = id,
+                    PostTags = postTags
+
+                };
+                return View(vm);
+            }
+
         }
 
         // POST: PostTagController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public ActionResult Delete(PostTagFormViewModel postTagVM)
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                foreach (int PostTagId in postTagVM.PostTagsSelected)
+                {
+
+                    
+                    _postTagRepository.DeletePostTag(PostTagId);
+                }
+                return RedirectToAction("Details", "Post", new { id = postTagVM.PostId });
             }
             catch
             {
-                return View();
+                IEnumerable<PostTag> postTags = _postTagRepository.GetAllPostTagsByPostId(postTagVM.PostId);
+
+                List<int> postTagsSelected = new List<int>();
+
+                //creating an instance of the view model class
+                PostTagFormViewModel vm = new PostTagFormViewModel()
+                {
+                    PostTag = new PostTag(),
+                    PostTagsSelected = postTagsSelected,
+                    PostId = postTagVM.PostId,
+                    PostTags = postTags
+
+                };
+                return View(vm);
+
+
             }
         }
     }
