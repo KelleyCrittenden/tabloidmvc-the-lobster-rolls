@@ -5,9 +5,20 @@ namespace TabloidMVC.Repositories
 {
     public interface IUserProfileRepository
     {
-        UserProfile GetByEmail(string email);
+
+        UserProfile GetUserProfileById(int id);
         List<UserProfile> GetAllUserProfiles();
-        void Add(UserProfile userProfile);
+        UserProfile GetByEmail(string email);
+
+        List<UserProfile> GetAllDeactivatedUserProfiles();
+        List<UserProfile> GetAllAdminUserProfiles();
+
+        void DeactivateProfile(int id);
+
+        void ReactivateProfile(int id);
+
+        void UpdateUserType(int id, int userTypeId);
+        void Register(UserProfile userProfile);
 
     }
 }
