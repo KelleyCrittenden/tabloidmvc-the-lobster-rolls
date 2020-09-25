@@ -40,10 +40,19 @@ namespace TabloidMVC.Controllers
 
         public IActionResult Details(int id)
         {
-           
-            var post = _postRepository.GetPublishedPostById(id);
-            post.TagNames = _postTagRepository.GetAllPostTagsByPostId(id);
 
+                var post = new Post();
+             
+          
+ 
+                post.TagNames = _postTagRepository.GetAllPostTagsByPostId(id);
+
+
+                post = _postRepository.GetPublishedPostById(id);
+          
+            
+
+            
             if (post == null)
             {
                 int userId = GetCurrentUserProfileId();

@@ -66,18 +66,26 @@
                     </a>
                 </tr>
             </thead>
-            <tbody>
-                @foreach (PostTag postTag in Model.TagNames)
-                {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => postTag.Tag.Name)
-                        </td>
-                        <td>
-                        </td>
-                    </tr>
-                }
-            </tbody>
+            @if (Model.TagNames == null)
+            {
+                <tbody></tbody>
+            }
+            else
+            {
+                <tbody>
+                    @foreach (PostTag postTag in Model.TagNames)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => postTag.Tag.Name)
+                            </td>
+                            <td>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            }
+
         </table>
 
         </div>
