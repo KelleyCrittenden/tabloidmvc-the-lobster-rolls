@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TabloidMVC.Models;
 
 namespace TabloidMVC.Repositories
 {
-    interface IPostTagRepository
+   public interface IPostTagRepository
     {
+        void AddPostTag(PostTag postTag);
     }
 }
