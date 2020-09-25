@@ -8,6 +8,7 @@ using TabloidMVC.Repositories;
 using TabloidMVC.Models;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Http;
+using System;
 
 namespace TabloidMVC.Controllers
 {
@@ -51,26 +52,7 @@ namespace TabloidMVC.Controllers
            
         }
 
-        // GET: UserController/Create
-        public ActionResult Register()
-        {
-            return View();
-        }
-
-        // POST: UserController/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Register(UserProfile profile)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+        
 
         // GET: UserController/Edit/5
         public ActionResult Edit(int id)
