@@ -172,16 +172,9 @@ namespace TabloidMVC.Repositories
                 {
                     cmd.CommandText = @"
                                  DELETE FROM Comment
-                            WHERE Id = @id";
-                        //@"
-                        //UPDATE Post
-                        //SET
-                        //IsDeleted = @isDeleted
-                        //WHERE Id = @id";
-
-                    //cmd.Parameters.AddWithValue("@isDeleted", 1);
+                                 WHERE Id = @id";
+                    
                     cmd.Parameters.AddWithValue("@id", id);
-
 
                     cmd.ExecuteNonQuery();
 

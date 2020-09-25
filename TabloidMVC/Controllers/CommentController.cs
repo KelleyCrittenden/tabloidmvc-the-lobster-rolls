@@ -41,7 +41,6 @@ namespace TabloidMVC.Controllers
         {
             Comment comment = _commentRepository.GetCommentById(id);
             return View(comment);
-        
         }
 
         // GET: CommentsController/Create
@@ -54,8 +53,7 @@ namespace TabloidMVC.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(Post post, Comment comment)
-        {
-            
+        {  
             try
             {
                 int userId = GetCurrentUserProfileId();
@@ -83,19 +81,18 @@ namespace TabloidMVC.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, Comment comment)
         {
-            int userId = GetCurrentUserProfileId();
-            comment.UserProfileId = userId;
-            //comment.PostId = post.Id;
-            _commentRepository.UpdateComment(comment);
-            return RedirectToAction("Details", new { id = comment.Id });
-            //try
-            //{
 
-            //}
-            //catch
-            //{
-            //    return View(comment);
-            //}
+            try
+            {
+                int userId = GetCurrentUserProfileId();
+                comment.UserProfileId = userId;
+                _commentRepository.UpdateComment(comment);
+                return RedirectToAction("Details", new { id = comment.Id });
+            }
+            catch
+            {
+                return View(comment);
+            }
         }
 
         // GET: CommentsController/Delete/5
@@ -108,12 +105,21 @@ namespace TabloidMVC.Controllers
         // POST: CommentsController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, Post post, Comment comment)
+        public ActionResult Delete(int id, Comment comment)
         {
             try
-            {   
-                _commentRepository.DeleteComment(id);
-                return RedirectToAction("Index", new { id = post.Id});
+            {
+                int userId = GetCurrentUserProfileId();
+                Comment aComment = _commentRepository.GetCommentById(id);
+                List<Post> posts = _postRepository.GetUserPostsById(userId);
+                foreach (Post aPost in posts)
+                {
+                    if (aPost.Id == aComment.PostId)
+                    {
+                        _commentRepository.DeleteComment(id);
+                    }
+                }
+                return RedirectToAction("Index", new { id = aComment.PostId });
             }
             catch
             {
