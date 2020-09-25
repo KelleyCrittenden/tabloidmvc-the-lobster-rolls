@@ -7,6 +7,7 @@ using TabloidMVC.Models.ViewModels;
 using TabloidMVC.Repositories;
 using TabloidMVC.Models;
 using System.Collections.Generic;
+using System;
 
 namespace TabloidMVC.Controllers
 {
@@ -42,27 +43,29 @@ namespace TabloidMVC.Controllers
         {
 
                 var post = new Post();
-             
-          
- 
-                post.TagNames = _postTagRepository.GetAllPostTagsByPostId(id);
-
 
                 post = _postRepository.GetPublishedPostById(id);
+
+            if (post == null)
+            {
+                
+            
+            
+
+
+              
           
             
 
-            
-            if (post == null)
-            {
-                int userId = GetCurrentUserProfileId();
-                post = _postRepository.GetUserPostById(id, userId);
-                if (post == null)
-                {
-                    return NotFound();
-                }
+           
+                return NotFound();
             }
-            return View(post);
+            else
+            {
+                post.TagNames = _postTagRepository.GetAllPostTagsByPostId(id);
+                return View(post);
+            }
+            
         }
 
         public IActionResult Create()
