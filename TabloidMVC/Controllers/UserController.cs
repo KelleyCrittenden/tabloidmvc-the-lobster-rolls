@@ -116,7 +116,7 @@ namespace TabloidMVC.Controllers
         // GET: UserController/Delete/5
         public ActionResult Deactivate(int id)
         {
-            var user = _userRepo.GetUserProfileById(id);
+            UserProfile user = _userRepo.GetUserProfileById(id);
             if (user != null)
             {
                 return View(user);
@@ -133,9 +133,10 @@ namespace TabloidMVC.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Deactivate(UserProfile profile )
         {
+            UserProfile userId = _userRepo.GetUserProfileById(profile.Id);
             try
             {
-                if(profile.UserTypeId == 2)
+                if(userId.UserTypeId == 1)
                 {
                     List<UserProfile> admins = _userRepo.GetAllAdminUserProfiles();
                     if (admins.Count <= 1)
