@@ -10,12 +10,14 @@ namespace TabloidMVC.Models.ViewModels
     {
         public PostTag PostTag { get; set; }
 
+        public int PostId { get; set; }
+
         //Initial list to display all tag options to user
-        public List<Tag> Tags { get; set; }
+        public IEnumerable<Tag> Tag { get; set; }
 
-        public IEnumerable<SelectListItem> TagsList { get; set; }
+        public List<int> TagsSelected { get; set; }
 
-        //List to Store Tags Selected by User to attach to Post
-        public IEnumerable<string> SelectedTags { get; set; }
+        
+
     }
 }

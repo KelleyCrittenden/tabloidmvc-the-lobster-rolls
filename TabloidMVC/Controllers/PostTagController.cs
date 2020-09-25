@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -15,12 +16,6 @@ namespace TabloidMVC.Controllers
 {
     public class PostTagController : Controller
     {
-
-        private int GetCurrentPostId()
-        {
-            string id = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            return int.Parse(id);
-        }
 
         private readonly IPostTagRepository _postTagRepository;
         private readonly ITagRepository _tagRepository;
@@ -38,8 +33,8 @@ namespace TabloidMVC.Controllers
         // GET: PostTagController
         public IActionResult Index()
         {
-            var tags = _tagRepository.GetAllTags();
-            return View(tags);
+     
+            return View();
         }
 
         // GET: PostTagController/Details/5
@@ -49,31 +44,20 @@ namespace TabloidMVC.Controllers
         }
 
         // GET: PostTagController/Create
-        public ActionResult Create()
+        public ActionResult Create(int id)
         {
-            List<Tag> tags = _tagRepository.GetAllTags();
+            IEnumerable<Tag> tags = _tagRepository.GetAllTags();
 
-            List<SelectListItem> listSelectListItem = new List<SelectListItem>();
-
-            //for every tag we have generated a select list item
-            //once you have the select item, add it to the collection
-            foreach (Tag tag in tags)
-            {
-                SelectListItem selectListItem = new SelectListItem()
-                {
-                    Text = tag.Name,
-                    Value = tag.Id.ToString(),
-                    Selected = tag.isSelected
-                };
-                listSelectListItem.Add(selectListItem);
-            }
+            List<int> tagsSelected = new List<int>();
 
             //creating an instance of the view model class
             PostTagFormViewModel vm = new PostTagFormViewModel()
             {
                 PostTag = new PostTag(),
-                Tags = tags,
-                TagsList = listSelectListItem
+                Tag = tags,
+                TagsSelected = tagsSelected,
+                PostId = id
+
             };
             return View(vm);
         }
@@ -81,35 +65,41 @@ namespace TabloidMVC.Controllers
         // POST: PostTagController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IEnumerable<string> selectedTags, PostTagFormViewModel postTagForm)
+        public ActionResult Create(PostTagFormViewModel postTagVM)
         
         {
             try
             {
-                foreach (string idString in selectedTags)
+                foreach (int TagId in postTagVM.TagsSelected)
                 {
 
-                    postTagForm.PostTag.TagId = int.Parse(idString);
-                    _postTagRepository.AddPostTag(postTagForm.PostTag);
-
-                }
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                    List<Tag> tags = _tagRepository.GetAllTags();
-                    List<SelectListItem> listSelectListItem = new List<SelectListItem>();
-
-                    PostTagFormViewModel vm = new PostTagFormViewModel()
+                    PostTag newPostTag = new PostTag
                     {
-                        PostTag = new PostTag(),
-                        Tags = tags,
-                        TagsList = listSelectListItem
+                        PostId = postTagVM.PostId,
+                        TagId = TagId
                     };
+                    _postTagRepository.AddPostTag(newPostTag);
+                }
+                return RedirectToAction("Details", "Post", new { id = postTagVM.PostId });
+            }
+            catch { 
+
+                IEnumerable<Tag> tags = _tagRepository.GetAllTags();
+
+                List<int> tagsSelected = new List<int>();
+
+                PostTagFormViewModel vm = new PostTagFormViewModel()
+                {
+                    PostTag = new PostTag(),
+                    Tag = tags,
+                    TagsSelected = tagsSelected,
+                    PostId = postTagVM.PostId
+                };
                     return View(vm);
 
-                }
+                
         }
+}
 
         // GET: PostTagController/Edit/5
         public ActionResult Edit(int id)
