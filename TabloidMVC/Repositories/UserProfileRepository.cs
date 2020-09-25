@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
+using System;
 using System.Collections.Generic;
 using TabloidMVC.Models;
 using TabloidMVC.Utils;
@@ -156,7 +157,9 @@ namespace TabloidMVC.Repositories
             }
         }
 
-        public List<UserProfile> GetAllDeactivatedUserProfiles()
+
+        public void Register(UserProfile profile)
+
         {
             using (var conn = Connection)
             {
@@ -164,7 +167,35 @@ namespace TabloidMVC.Repositories
                 using (var cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
-                       SELECT u.id, u.FirstName, u.LastName, u.DisplayName, u.Email,
+                    INSERT INTO UserProfile (FirstName, LastName, DisplayName, Email, ImageLocation, UserTypeId, CreateDateTime)
+                    OUTPUT INSERTED.ID
+                    VALUES (@firstName, @lastName, @displayName, @email, @imageLocation, @userTypeId, @createDateTime);
+                ";
+
+                    cmd.Parameters.AddWithValue("@firstName", profile.FirstName);
+                    cmd.Parameters.AddWithValue("@lastName", profile.LastName);
+                    cmd.Parameters.AddWithValue("@displayName", profile.DisplayName);
+                    cmd.Parameters.AddWithValue("@email", profile.Email);
+                    cmd.Parameters.AddWithValue("@ImageLocation", DbUtils.ValueOrDBNull(profile.ImageLocation));
+                    cmd.Parameters.AddWithValue("@userTypeId", profile.UserTypeId);
+                    cmd.Parameters.AddWithValue("@createDateTime", profile.CreateDateTime);
+
+
+                    int id = (int)cmd.ExecuteScalar();
+
+                    profile.Id = id;
+                }
+            }
+        }
+        public List<UserProfile> GetAllDeactivatedUserProfiles()
+            {
+                using (var conn = Connection)
+                {
+                    conn.Open();
+                    using (var cmd = conn.CreateCommand())
+                    {
+                        cmd.CommandText = @"
+                        SELECT u.id, u.FirstName, u.LastName, u.DisplayName, u.Email,
                               u.CreateDateTime, u.ImageLocation, u.UserTypeId,
                               ut.[Name] AS UserTypeName, u.IsDeactivated
                          FROM UserProfile u
@@ -323,7 +354,6 @@ namespace TabloidMVC.Repositories
 
                 }
             }
-
         }
     }
 }
