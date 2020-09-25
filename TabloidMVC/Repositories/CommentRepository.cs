@@ -145,15 +145,13 @@ namespace TabloidMVC.Repositories
                 {
                     cmd.CommandText = @"
                             UPDATE Comment
-                            SET 
-                                PostId = @postId, 
+                            SET  
                                 UserProfileId = @userProfileId, 
                                 Subject= @subject, 
                                 Content = @Content
-                              
                             WHERE Id = @id";
 
-                    cmd.Parameters.AddWithValue("@postId", comment.PostId);
+                    //cmd.Parameters.AddWithValue("@postId", comment.PostId);
                     cmd.Parameters.AddWithValue("@userProfileId", comment.UserProfileId);
                     cmd.Parameters.AddWithValue("@subject", comment.Subject);
                     cmd.Parameters.AddWithValue("@content", comment.Content);
@@ -163,6 +161,33 @@ namespace TabloidMVC.Repositories
                     cmd.ExecuteNonQuery();
                 }
             }
+        }
+
+        public void DeleteComment(int id)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                                 DELETE FROM Comment
+                            WHERE Id = @id";
+                        //@"
+                        //UPDATE Post
+                        //SET
+                        //IsDeleted = @isDeleted
+                        //WHERE Id = @id";
+
+                    //cmd.Parameters.AddWithValue("@isDeleted", 1);
+                    cmd.Parameters.AddWithValue("@id", id);
+
+
+                    cmd.ExecuteNonQuery();
+
+                }
+            }
+
         }
     }
 }

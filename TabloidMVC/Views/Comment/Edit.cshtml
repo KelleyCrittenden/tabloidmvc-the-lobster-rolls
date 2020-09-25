@@ -25,14 +25,14 @@
             </div>
             <div class="form-group">
                 <label asp-for="Content" class="control-label"></label>
-                <input asp-for="Content" class="form-control" />
+                <textarea asp-for="Content" class="form-control"></textarea>
                 <span asp-validation-for="Content" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
            
-            @Html.ActionLink("Back To List", "Index", "Comment", new { id = @Model.PostId })
+            <button class="btn btn-outline-primary">@Html.ActionLink("Back To List", "Index", "Comment", new { id = @Model.PostId })</button> 
           
         </form>
     </div>

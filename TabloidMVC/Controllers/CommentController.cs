@@ -81,40 +81,43 @@ namespace TabloidMVC.Controllers
         // POST: CommentsController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, Post post, Comment comment)
+        public ActionResult Edit(int id, Comment comment)
         {
-            try
-            {
-                int userId = GetCurrentUserProfileId();
-                comment.UserProfileId = userId;
-                comment.PostId = post.Id;
-                _commentRepository.UpdateComment(comment);
-                return RedirectToAction("Details", new { id = comment.Id });
-            }
-            catch
-            {
-                return View(comment);
-            }
+            int userId = GetCurrentUserProfileId();
+            comment.UserProfileId = userId;
+            //comment.PostId = post.Id;
+            _commentRepository.UpdateComment(comment);
+            return RedirectToAction("Details", new { id = comment.Id });
+            //try
+            //{
+
+            //}
+            //catch
+            //{
+            //    return View(comment);
+            //}
         }
 
         // GET: CommentsController/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            Comment comment =  _commentRepository.GetCommentById(id);
+            return View(comment);
         }
 
         // POST: CommentsController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public ActionResult Delete(int id, Post post, Comment comment)
         {
             try
-            {
-                return RedirectToAction(nameof(Index));
+            {   
+                _commentRepository.DeleteComment(id);
+                return RedirectToAction("Index", new { id = post.Id});
             }
             catch
             {
-                return View();
+                return View(comment);
             }
         }
 
