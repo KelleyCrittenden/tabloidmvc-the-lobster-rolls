@@ -73,12 +73,12 @@ namespace TabloidMVC.Controllers
             profile.CreateDateTime = DateAndTime.Now;
             profile.UserTypeId = 2;
             _userProfileRepository.Register(profile);
-            Credentials login = new Credentials
+            Credentials userLogin = new Credentials
             {
                 Email = profile.Email
             };
-           await  Login(login);
-            RedirectToAction("Index", "Home");
+           await  Login(userLogin);
+            RedirectToAction("Index", "Post");
 
 
 
