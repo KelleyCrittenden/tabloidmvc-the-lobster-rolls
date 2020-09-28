@@ -9,10 +9,13 @@ using TabloidMVC.Models;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Http;
 using System;
+using System.Linq;
+using Microsoft.AspNetCore.Identity;
 
 namespace TabloidMVC.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Admin")]
+    
     public class UserController : Controller
     {
         private readonly IUserProfileRepository _userRepo;
@@ -92,16 +95,22 @@ namespace TabloidMVC.Controllers
                             Profile = profile,
                             UserTypes = types
                         };
+                      
+
                         return View(upvm);
                     }
                     else
                     {
+
+
+                    
                         _userRepo.UpdateUserType(vm.Profile.Id, vm.Profile.UserTypeId);
                         return RedirectToAction("Index");
                     }
                 }
                 else
                 {
+                  
                     _userRepo.UpdateUserType(vm.Profile.Id, vm.Profile.UserTypeId);
                     return RedirectToAction("Index");
                 }
