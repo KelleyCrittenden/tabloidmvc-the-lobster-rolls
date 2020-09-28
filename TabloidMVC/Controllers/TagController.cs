@@ -1,10 +1,15 @@
-﻿using System;
+﻿//Created By Kelley Crittenden
+
+using System;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using TabloidMVC.Models;
 using TabloidMVC.Repositories;
 
 namespace TabloidMVC.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class TagController : Controller
     {
         private readonly ITagRepository _tagRepository;

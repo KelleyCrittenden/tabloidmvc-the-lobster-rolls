@@ -1,4 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿//Created By Kelley Crittenden
+//This file holds a template for the Tag
+
+using System.ComponentModel.DataAnnotations;
 
 
 namespace TabloidMVC.Models
