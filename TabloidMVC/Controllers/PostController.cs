@@ -101,8 +101,7 @@ namespace TabloidMVC.Controllers
             int userId = GetCurrentUserProfileId();
             post = _postRepository.GetUserPostById(id, userId);
             var categories = _categoryRepository.GetAll();
-            if (post != null)
-            {
+           
                 PostCreateViewModel vm = new PostCreateViewModel
                 {
                     Post = post,
@@ -110,10 +109,6 @@ namespace TabloidMVC.Controllers
                 };
 
                 return View(vm);
-            } else
-            {
-                return RedirectToAction("Index");
-            }
         }
 
         [HttpPost]
