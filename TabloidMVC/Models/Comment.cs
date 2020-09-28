@@ -16,6 +16,8 @@ namespace TabloidMVC.Models
         [DisplayName("Author")]
         public int UserProfileId { get; set; }
         public string Subject { get; set; }
+
+        [DisplayName("Comment")]
         public string Content { get; set; }
 
         [DataType(DataType.Date)]

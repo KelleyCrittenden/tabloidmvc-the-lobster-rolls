@@ -97,7 +97,17 @@ namespace TabloidMVC.Repositories
                             UserProfileId = reader.GetInt32(reader.GetOrdinal("UserProfileId")),
                             Subject = reader.GetString(reader.GetOrdinal("Subject")),
                             Content = reader.GetString(reader.GetOrdinal("Content")),
-                            CreateDateTime = reader.GetDateTime(reader.GetOrdinal("CreateDateTime"))
+                            CreateDateTime = reader.GetDateTime(reader.GetOrdinal("CreateDateTime")),
+                            Post = new Post
+                            {
+                                Id = reader.GetInt32(reader.GetOrdinal("PostId")),
+                                Title = reader.GetString(reader.GetOrdinal("Title"))
+                            },
+                            UserProfile = new UserProfile
+                            {
+                                Id = reader.GetInt32(reader.GetOrdinal("UserProfileId")),
+                                DisplayName = reader.GetString(reader.GetOrdinal("DisplayName"))
+                            }
 
                         };
 

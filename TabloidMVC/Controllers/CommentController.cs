@@ -25,11 +25,13 @@ namespace TabloidMVC.Controllers
         public ActionResult Index(int id)
         {
             Post post = _postRepository.GetPublishedPostById(id);
+            Comment comment = _commentRepository.GetCommentById(id);
             List<Comment> comments = _commentRepository.GetAllCommentsByPostId(id);
 
             PostCommentViewModel vm = new PostCommentViewModel
             {
                 Post = post,
+                Comment = comment,
                 Comments = comments
             };
 
@@ -40,7 +42,15 @@ namespace TabloidMVC.Controllers
         public ActionResult Details(int id)
         {
             Comment comment = _commentRepository.GetCommentById(id);
-            return View(comment);
+            Post post = _postRepository.GetPublishedPostById(comment.PostId);
+            
+            PostCommentViewModel vm = new PostCommentViewModel
+            {
+                Post = post,
+                Comment = comment 
+            };
+
+            return View(vm);
         }
 
         // GET: CommentsController/Create
