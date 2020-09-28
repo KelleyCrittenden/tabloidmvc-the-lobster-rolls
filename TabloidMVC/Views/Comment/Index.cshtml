@@ -4,55 +4,66 @@
     ViewData["Title"] = "Index";
 }
 
-<h2>@Model.Post.Title</h2>
-<div>
-    <a asp-controller="Post" asp-action="Details" asp-route-id="@Model.Post.Id">Back to Post</a>
-</div>
+<div class="container pt-5">
+    <h1>@Model.Post.Title</h1>
+    <p>
+        <a class="btn btn-primary" asp-controller="Post" asp-action="Details" asp-route-id="@Model.Post.Id">Back to Post</a>
+    </p>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                Author
-            </th>
-            <th>
-                Subject
-            </th>
-            <th>
-                Comment
-            </th>
-            <th>
-                Date Written
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (Comment comment in Model.Comments)
-        {
+    <table class="table table-striped">
+        <thead>
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => comment.UserProfile.DisplayName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => comment.Subject)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => comment.Content)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => comment.CreateDateTime)
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@comment.Id" class="btn btn-outline-primary mx-1" title="Edit">
-                        <i class="fas fa-pencil-alt"></i>
-                    </a>
-                    <a asp-action="Delete" asp-route-id="@comment.Id" class="btn btn-outline-primary mx-1" title="Delete">
-                        <i class="fas fa-trash"></i>
-                    </a>
-                </td>
+                <th>
+                   Author
+                </th>
+                <th>
+                   Subject
+                </th>
+                <th>
+                   Comment
+                </th>
+                <th>
+                   Date Written
+                </th>
+                <th></th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (Comment comment in Model.Comments)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => comment.UserProfile.DisplayName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => comment.Subject)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => comment.Content)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => comment.CreateDateTime)
+                    </td>
+                    <td>
+                        @if (comment.UserProfileId == int.Parse(User.Claims.ElementAt(0).Value))
+                        {
+                            <a asp-action="Edit" asp-route-id="@comment.Id" class="btn btn-outline-primary mx-1" title="Edit">
+                                <i class="fas fa-pencil-alt"></i>
+                            </a>
+                            <a asp-action="Delete" asp-route-id="@comment.Id" class="btn btn-outline-primary mx-1" title="Delete">
+                                <i class="fas fa-trash"></i>
+                            </a>
+                        }
+                        else
+                        {
+                            <div></div>
+                        }
+
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
 
 

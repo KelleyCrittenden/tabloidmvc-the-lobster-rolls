@@ -37,11 +37,6 @@ namespace TabloidMVC.Models
         public UserProfile UserProfile { get; set; }
 
         public List<PostTag> TagNames { get; set; }
-
-
-
-        
-
         public double calculateReadTime()
         {
             double time = 0;
