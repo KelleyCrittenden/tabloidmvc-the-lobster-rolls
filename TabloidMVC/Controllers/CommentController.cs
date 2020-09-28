@@ -27,10 +27,10 @@ namespace TabloidMVC.Controllers
         {
             Post post = _postRepository.GetPublishedPostById(id);
             List<Comment> comments = _commentRepository.GetAllCommentsByPostId(id);
-            //if (post == null || comment == null || comments == null)
-            //{
-            //    return NotFound();
-            //}
+            if (post == null || comments == null)
+            {
+                return NotFound();
+            }
 
             PostCommentViewModel vm = new PostCommentViewModel
             {
@@ -44,8 +44,9 @@ namespace TabloidMVC.Controllers
         // GET: CommentsController/Details/5
         public ActionResult Details(int id)
         {
+            int userId = GetCurrentUserProfileId();
             Comment comment = _commentRepository.GetCommentById(id);
-            if (comment == null)
+            if (comment == null || comment.UserProfileId != userId)
             {
                 return NotFound();
             }
@@ -89,11 +90,13 @@ namespace TabloidMVC.Controllers
         // GET: CommentsController/Edit/5
         public ActionResult Edit(int id)
         {
+            int userId = GetCurrentUserProfileId();
             Comment comment = _commentRepository.GetCommentById(id);
-            if (comment == null)
+            if (comment.UserProfileId != userId || comment == null )
             {
                 return NotFound();
             }
+           
             return View(comment);
         }
 
@@ -119,8 +122,10 @@ namespace TabloidMVC.Controllers
         // GET: CommentsController/Delete/5
         public ActionResult Delete(int id)
         {
+            int userId = GetCurrentUserProfileId();
             Comment comment =  _commentRepository.GetCommentById(id);
-            if (comment == null)
+
+            if (comment.UserProfileId != userId || comment == null)
             {
                 return NotFound();
             }

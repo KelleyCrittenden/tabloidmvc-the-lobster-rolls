@@ -35,7 +35,7 @@
         </div>
     </div>
     <div>
-        <button type="button" class="btn btn-outline-primary">@Html.ActionLink("Cancel", "Index", "Comment", new { id = @Model.PostId })</button>
+        @Html.ActionLink("Cancel", "Index", "Comment", new { id = @Model.PostId })
     </div>
 </div>
 
