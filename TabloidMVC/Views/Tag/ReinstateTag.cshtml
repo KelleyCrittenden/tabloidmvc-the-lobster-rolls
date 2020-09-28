@@ -1,4 +1,6 @@
-﻿@model TabloidMVC.Models.Tag
+﻿@*Created By Kelley Crittenden*@
+
+@model TabloidMVC.Models.Tag
 
 @{
     ViewData["Title"] = "ReinstateTag";
@@ -19,13 +21,15 @@
             </h5>
             <form asp-action="ReinstateTag">
 
-                    <input type="submit" value="Reinstate" class="btn btn-primary" />
+                <input type="submit" value="Reinstate" class="btn btn-primary" />
+                <input asp-action="Index" type="submit" value="Cancel" class="btn btn-primary" />
             </form>
             <br />
         </div>
 
     </div>
+
     <div>
-        <a asp-action="DeletedIndex">Back to List</a>
+        <a asp-action="Index">Back to List</a>
     </div>
 </div>
