@@ -7,9 +7,9 @@
     <h1>Categories for Post</h1>
     @if (User.IsInRole("Admin"))
     {
-        <p>
-            <a asp-action="Create">Add New Category</a>
-        </p>
+<p>
+    <a class="btn btn-primary" asp-action="Create">Add New Category</a>
+</p>
     }
     <p></p>
     <table class="table table-striped">
@@ -39,12 +39,12 @@
                         <td>
                             @Html.DisplayFor(modelItem => item.Name)
                         </td>
+                       
                         <td>
                             <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-primary mx-1" title="Edit">
                                 <i class="fas fa-pencil-alt"></i>
                             </a>
-                        </td>
-                            <td>
+                        
                             <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-primary mx-1" title="Delete">
                                 <i class="fas fa-trash"></i>
                             </a>
