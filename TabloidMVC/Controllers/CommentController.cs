@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TabloidMVC.Models;
@@ -10,7 +11,7 @@ using TabloidMVC.Models.ViewModels;
 using TabloidMVC.Repositories;
 
 namespace TabloidMVC.Controllers
-{
+{  [Authorize]
     public class CommentController : Controller
     {
         private readonly ICommentRepository _commentRepository;
@@ -26,6 +27,10 @@ namespace TabloidMVC.Controllers
         {
             Post post = _postRepository.GetPublishedPostById(id);
             List<Comment> comments = _commentRepository.GetAllCommentsByPostId(id);
+            if (post == null || comments == null)
+            {
+                return NotFound();
+            }
 
             PostCommentViewModel vm = new PostCommentViewModel
             {
@@ -39,8 +44,21 @@ namespace TabloidMVC.Controllers
         // GET: CommentsController/Details/5
         public ActionResult Details(int id)
         {
+            int userId = GetCurrentUserProfileId();
             Comment comment = _commentRepository.GetCommentById(id);
-            return View(comment);
+            if (comment == null || comment.UserProfileId != userId)
+            {
+                return NotFound();
+            }
+            Post post = _postRepository.GetPublishedPostById(comment.PostId);
+        
+            PostCommentViewModel vm = new PostCommentViewModel
+            {
+                Post = post,
+                Comment = comment 
+            };
+
+            return View(vm);
         }
 
         // GET: CommentsController/Create
@@ -72,7 +90,13 @@ namespace TabloidMVC.Controllers
         // GET: CommentsController/Edit/5
         public ActionResult Edit(int id)
         {
+            int userId = GetCurrentUserProfileId();
             Comment comment = _commentRepository.GetCommentById(id);
+            if (comment.UserProfileId != userId || comment == null )
+            {
+                return NotFound();
+            }
+           
             return View(comment);
         }
 
@@ -98,7 +122,13 @@ namespace TabloidMVC.Controllers
         // GET: CommentsController/Delete/5
         public ActionResult Delete(int id)
         {
+            int userId = GetCurrentUserProfileId();
             Comment comment =  _commentRepository.GetCommentById(id);
+
+            if (comment.UserProfileId != userId || comment == null)
+            {
+                return NotFound();
+            }
             return View(comment);
         }
 
