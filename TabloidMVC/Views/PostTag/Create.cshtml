@@ -33,6 +33,9 @@
 
 
             </form>
+<div>
+    <a asp-controller="Post" asp-action="Details" asp-route-id="@Model.PostId">Back to List</a>
+</div>
 
         </div>
     </div>
@@ -40,9 +43,6 @@
 <br /> 
 
 
-<div>
-    <a asp-controller="Post" asp-action="Details" asp-route-id="@Model.PostId">Back to List</a>
-</div>
 
     @section Scripts {
         @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
