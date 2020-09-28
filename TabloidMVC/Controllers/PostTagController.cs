@@ -52,6 +52,8 @@ namespace TabloidMVC.Controllers
             IEnumerable<Tag> tags = _tagRepository.GetAllTags();
 
             List<int> tagsSelected = new List<int>();
+            Post post = _postRepository.GetPublishedPostById(id);
+
 
             //creating an instance of the view model class
             PostTagFormViewModel vm = new PostTagFormViewModel()
@@ -62,7 +64,14 @@ namespace TabloidMVC.Controllers
                 PostId = id
 
             };
-            return View(vm);
+            if (post.UserProfileId == int.Parse(User.Claims.ElementAt(0).Value))
+            {
+                return View(vm);
+            }
+            else
+            {
+                return NotFound();
+            }
         }
 
         // POST: PostTagController/Create
@@ -133,7 +142,8 @@ namespace TabloidMVC.Controllers
                 IEnumerable<PostTag> postTags = _postTagRepository.GetAllPostTagsByPostId(id);
 
                 List<int> postTagsSelected = new List<int>();
-
+                Post post = _postRepository.GetPublishedPostById(id);
+                
                 //creating an instance of the view model class
                 PostTagFormViewModel vm = new PostTagFormViewModel()
                 {
@@ -143,7 +153,14 @@ namespace TabloidMVC.Controllers
                     PostTags = postTags
 
                 };
-                return View(vm);
+                if (post.UserProfileId == int.Parse(User.Claims.ElementAt(0).Value))
+                {
+                    return View(vm);
+                }
+                else
+                {
+                    return NotFound();
+                }
             }
 
         }
