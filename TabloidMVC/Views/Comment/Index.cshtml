@@ -14,16 +14,16 @@
         <thead>
             <tr>
                 <th>
-                    @Html.DisplayNameFor(model => model.Comment.UserProfileId)
+                    Author
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Comment.Subject)
+                   Subject
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Comment.Content)
+                    Comment
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Comment.CreateDateTime)
+                    Date Written
                 </th>
                 <th></th>
             </tr>
@@ -45,12 +45,20 @@
                         @Html.DisplayFor(modelItem => comment.CreateDateTime)
                     </td>
                     <td>
-                        <a asp-action="Edit" asp-route-id="@comment.Id" class="btn btn-outline-primary mx-1" title="Edit">
-                            <i class="fas fa-pencil-alt"></i>
-                        </a>
-                        <a asp-action="Delete" asp-route-id="@comment.Id" class="btn btn-outline-primary mx-1" title="Delete">
-                            <i class="fas fa-trash"></i>
-                        </a>
+                        @if (comment.UserProfileId == int.Parse(User.Claims.ElementAt(0).Value))
+                        {
+                            <a asp-action="Edit" asp-route-id="@comment.Id" class="btn btn-outline-primary mx-1" title="Edit">
+                                <i class="fas fa-pencil-alt"></i>
+                            </a>
+                            <a asp-action="Delete" asp-route-id="@comment.Id" class="btn btn-outline-primary mx-1" title="Delete">
+                                <i class="fas fa-trash"></i>
+                            </a>
+                        }
+                        else
+                        {
+                            <div></div>
+                        }
+
                     </td>
                 </tr>
             }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TabloidMVC.Models;
@@ -10,7 +11,7 @@ using TabloidMVC.Models.ViewModels;
 using TabloidMVC.Repositories;
 
 namespace TabloidMVC.Controllers
-{
+{  [Authorize]
     public class CommentController : Controller
     {
         private readonly ICommentRepository _commentRepository;
@@ -25,17 +26,15 @@ namespace TabloidMVC.Controllers
         public ActionResult Index(int id)
         {
             Post post = _postRepository.GetPublishedPostById(id);
-            Comment comment = _commentRepository.GetCommentById(id);
             List<Comment> comments = _commentRepository.GetAllCommentsByPostId(id);
-            if (post == null || comment == null || comments == null)
-            {
-                return NotFound();
-            }
+            //if (post == null || comment == null || comments == null)
+            //{
+            //    return NotFound();
+            //}
 
             PostCommentViewModel vm = new PostCommentViewModel
             {
                 Post = post,
-                Comment = comment,
                 Comments = comments
             };
 
