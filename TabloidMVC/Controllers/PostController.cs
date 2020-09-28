@@ -8,6 +8,7 @@ using TabloidMVC.Repositories;
 using TabloidMVC.Models;
 using System.Collections.Generic;
 using System;
+using System.Linq;
 
 namespace TabloidMVC.Controllers
 {
@@ -94,21 +95,27 @@ namespace TabloidMVC.Controllers
                 return View(vm);
             }
         }
-
+        
         public IActionResult Edit(int id)
         {
             var post = new Post();
             int userId = GetCurrentUserProfileId();
             post = _postRepository.GetUserPostById(id, userId);
             var categories = _categoryRepository.GetAll();
-           
-                PostCreateViewModel vm = new PostCreateViewModel
-                {
-                    Post = post,
-                    CategoryOptions = categories
-                };
 
+            PostCreateViewModel vm = new PostCreateViewModel
+            {
+                Post = post,
+                CategoryOptions = categories
+            };
+            if (post == null || post.UserProfileId != int.Parse(User.Claims.ElementAt(0).Value))
+            {
+                return NotFound();
+            }
+            else
+            {
                 return View(vm);
+            };
         }
 
         [HttpPost]
@@ -143,8 +150,16 @@ namespace TabloidMVC.Controllers
         {
             Post post = _postRepository.GetPublishedPostById(id);
 
-            return View(post);
+            if (post == null || post.UserProfileId != int.Parse(User.Claims.ElementAt(0).Value))
+            {
+                return NotFound();
+            }
+            else
+            {
+                return View(post);
+            }
         }
+           
 
         [HttpPost]
         public IActionResult Delete(Post post)
