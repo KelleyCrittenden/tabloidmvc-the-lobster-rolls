@@ -17,11 +17,16 @@ namespace TabloidMVC.Repositories
                 conn.Open();
                 using (var cmd = conn.CreateCommand())
                 {
+                   // get id and name from category table or return it based on name spelling in descending order
                     cmd.CommandText = "SELECT id, [name] FROM Category ORDER BY name";
+                    
+                    //execute sql command, builds sql data reader and retruns a reader object 
                     var reader = cmd.ExecuteReader();
 
                     var categories = new List<Category>();
 
+                    //while the sql data reader returns results, we obtain those values in the form we need them in (string, int, etc.)
+                    // and add each converted object (now category type) to the empty list created above
                     while (reader.Read())
                     {
                         categories.Add(new Category()
@@ -31,8 +36,10 @@ namespace TabloidMVC.Repositories
                         });
                     }
 
+                    //Close the reader when there is no responses to loop through
                     reader.Close();
 
+                    //return the list of categories as the result of our GetAll method
                     return categories;
                 }
             }
@@ -44,12 +51,16 @@ namespace TabloidMVC.Repositories
             using (var conn = Connection)
             {
                 conn.Open();
+                //SQL String that says we plan to insert into the category table with a new row that contains data for the Name Column
+                // Then the SQL String says we are going to need an Output (repsonse) from the SQL Server containing the id of the row the insert will be placed
+                // then we declare the location of the value we would like to add using the "@" to symbolize the paramater name
                 using (var cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
                         INSERT INTO Category ([Name])
                         OUTPUT INSERTED.ID
                         VALUES (@Name)";
+                    //After the SQL String is declared we place the expected values in a comand that adds values to paramaters by passing through the SQL @Values
                     cmd.Parameters.AddWithValue("@Name", category.Name);
 
                     category.Id = (int)cmd.ExecuteScalar();
