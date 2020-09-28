@@ -10,7 +10,7 @@ using TabloidMVC.Repositories;
 //Maintained by Brett Stoudt
 namespace TabloidMVC.Controllers
 {
-    [Authorize]
+    
     public class CategoryController : Controller
     {
         private readonly ICategoryRepository _categoryRepository;
@@ -23,6 +23,7 @@ namespace TabloidMVC.Controllers
         }
 
         //GET: Category/Index
+        [Authorize(Roles = "Admin, Author")]
         public IActionResult Index()
         {
             var categories = _categoryRepository.GetAll();
@@ -30,6 +31,7 @@ namespace TabloidMVC.Controllers
         }
 
         //GET: Category/Edit/1
+        [Authorize(Roles = "Admin")]
         public IActionResult Edit(int id)
         {
             var category = _categoryRepository.GetCategoryById(id);
@@ -43,6 +45,7 @@ namespace TabloidMVC.Controllers
         }
 
         //POST: Categroy/Edit/1
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Edit(int id, Category category)
@@ -58,14 +61,17 @@ namespace TabloidMVC.Controllers
                 return View(category);
             }
         }
+
         //GET: Category/Create
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
            
             return View();
         }
 
-        //POST
+        //POST : Category/Create
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public IActionResult Create(Category newCategory)
         {
@@ -86,10 +92,11 @@ namespace TabloidMVC.Controllers
         }
 
 
-       
+
 
 
         // GET: Owners/Delete/5
+        [Authorize(Roles = "Admin")]
         public ActionResult Delete(int id)
         {
             Category category = _categoryRepository.GetCategoryById(id);
@@ -108,6 +115,7 @@ namespace TabloidMVC.Controllers
         }
 
         // POST: Owners/Delete/5
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, Category category)
@@ -129,35 +137,6 @@ namespace TabloidMVC.Controllers
                 return View(category);
             }
         }
-
-    //    // GET: Category/Delete/5
-    //    public IActionResult Delete(int id)
-    //    {
-    //        Category category = _categoryRepository.GetCategoryById(id);
-    //        if (category == null)
-    //        {
-
-    //            return NotFound();
-
-    //        }
-    //        return View(category);
-    //    }
-
-    //    // POST: Category/Delete/5
-    //    [HttpPost]
-    //    public IActionResult Delete(Category category)
-    //{
-    //    try
-    //    {
-    //        _categoryRepository.DeleteCategory(category.Id);
-
-    //        return RedirectToAction("Index");
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        return View(category);
-    //    }
-    //}
 
     private int GetCurrentUserProfileId()
         {

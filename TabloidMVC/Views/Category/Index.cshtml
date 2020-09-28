@@ -5,10 +5,11 @@
 }
 
 <h1>Categories for Post</h1>
-
+@if (User.IsInRole("Admin")) {
 <p>
     <a asp-action="Create">Add New Category</a>
 </p>
+} 
 <table class="table">
     <thead>
         <tr>
@@ -21,13 +22,13 @@
     <tbody>
         @foreach (var item in Model)
         {
-            if (item.Id == 1)
+            if (User.IsInRole("Author") || item.Id == 1)
             {
                 <tr>
                     <td>
                         @Html.DisplayFor(modelItem => item.Name)
                     </td>
-                   <td></td>
+                    <td></td>
                 </tr>
             }
             else
