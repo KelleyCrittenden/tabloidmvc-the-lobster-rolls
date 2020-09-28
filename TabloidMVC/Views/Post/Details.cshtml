@@ -51,19 +51,11 @@
         <section class="row post__content">
             <p class="col-sm-12 mt-5">@Html.DisplayFor(model => model.Content)</p>
         </section>
-
+        <br />
         <table class="table">
             <thead>
                 <tr>
-                    <th>
-                        Tags
-                    </th>
-                    <a asp-controller="PostTag" asp-action="Create" asp-route-id="@Model.Id" class="btn btn-outline-primary mx-1" title="PostTag">
-                        Add Tag
-                    </a>
-                    <a asp-controller="PostTag" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-outline-primary mx-1" title="Manage Tags">
-                        Delete Tags
-                    </a>
+                    <h3> Tags </h3>
                 </tr>
             </thead>
             @if (Model.TagNames == null)
@@ -87,6 +79,16 @@
             }
 
         </table>
+        
+        @if (Model.UserProfileId == int.Parse(User.Claims.ElementAt(0).Value))
+        {
+        <a asp-controller="PostTag" asp-action="Create" asp-route-id="@Model.Id" class="btn btn-outline-primary mx-1" title="PostTag">
+            Add Tag
+        </a>
+        <a asp-controller="PostTag" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-outline-primary mx-1" title="Manage Tags">
+            Delete Tags
+        </a>
+        }
 
-        </div>
+    </div>
 </div>
