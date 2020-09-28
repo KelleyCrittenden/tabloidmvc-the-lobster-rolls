@@ -1,4 +1,6 @@
-﻿@model TabloidMVC.Models.Tag
+﻿@*Created By Kelley Crittenden*@
+
+@model TabloidMVC.Models.Tag
 
 @{
     ViewData["Title"] = "Edit";
@@ -25,17 +27,19 @@
                 </div>
                 <div class="form-group" align-center>
                     <input type="submit" value="Save" class="btn btn-primary" />
-               
-                        <input asp-action="Index" type="submit" value="Cancel" class="btn btn-primary" />
-                
 
+                    <input asp-action="Index" type="submit" value="Cancel" class="btn btn-primary" />
                 </div>
-               
+
             </form>
         </div>
     </div>
-    </div>
 
-    @section Scripts {
-        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    }
+    <div>
+        <a asp-action="Index">Back to List</a>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

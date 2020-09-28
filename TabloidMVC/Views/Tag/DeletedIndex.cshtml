@@ -1,39 +1,41 @@
-﻿@model IEnumerable<TabloidMVC.Models.Tag>
+﻿@*Created By Kelley Crittenden*@
+
+@model IEnumerable<TabloidMVC.Models.Tag>
 
 @{
     ViewData["Title"] = "DeletedIndex";
 }
 
-    <div class="container pt-5">
-        <h1>Deleted Tags</h1>
+<div class="container pt-5">
+    <h1>Deleted Tags</h1>
 
-        <table class="table table-striped">
-            <thead>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
+                <th>Reinstate</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
                 <tr>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Name)
-                    </th>
-                    <th>Reinstate</th>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        <a asp-action="ReinstateTag" asp-route-id="@item.Id" class="btn btn-outline-primary mx-1" title="ReinstateTag">
+                            <i class="fas fa-arrow-alt-circle-down"></i>
+                        </a>
+                    </td>
                 </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Name)
-                        </td>
-                        <td>
-                            <a asp-action="ReinstateTag" asp-route-id="@item.Id" class="btn btn-outline-primary mx-1" title="ReinstateTag">
-                                <i class="fas fa-arrow-alt-circle-down"></i>
-                            </a>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-        <div>
-            <a asp-action="Index">Back to List</a>
-        </div>
+            }
+        </tbody>
+    </table>
+    <div>
+        <a asp-action="Index">Back to List</a>
     </div>
+</div>
 

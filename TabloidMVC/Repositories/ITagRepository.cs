@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿//Created By Kelley Crittenden
+//This file holds methods
+
+using System.Collections.Generic;
 using TabloidMVC.Models;
 using Microsoft.Data.SqlClient;
 

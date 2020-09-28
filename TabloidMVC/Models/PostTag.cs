@@ -1,4 +1,7 @@
-﻿using System;
+﻿//Created By Kelley Crittenden
+//This file holds a template for a post tag
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
