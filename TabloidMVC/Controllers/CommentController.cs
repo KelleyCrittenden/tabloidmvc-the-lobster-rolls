@@ -27,6 +27,10 @@ namespace TabloidMVC.Controllers
             Post post = _postRepository.GetPublishedPostById(id);
             Comment comment = _commentRepository.GetCommentById(id);
             List<Comment> comments = _commentRepository.GetAllCommentsByPostId(id);
+            if (post == null || comment == null || comments == null)
+            {
+                return NotFound();
+            }
 
             PostCommentViewModel vm = new PostCommentViewModel
             {
@@ -42,8 +46,12 @@ namespace TabloidMVC.Controllers
         public ActionResult Details(int id)
         {
             Comment comment = _commentRepository.GetCommentById(id);
+            if (comment == null)
+            {
+                return NotFound();
+            }
             Post post = _postRepository.GetPublishedPostById(comment.PostId);
-            
+        
             PostCommentViewModel vm = new PostCommentViewModel
             {
                 Post = post,
@@ -83,6 +91,10 @@ namespace TabloidMVC.Controllers
         public ActionResult Edit(int id)
         {
             Comment comment = _commentRepository.GetCommentById(id);
+            if (comment == null)
+            {
+                return NotFound();
+            }
             return View(comment);
         }
 
@@ -109,6 +121,10 @@ namespace TabloidMVC.Controllers
         public ActionResult Delete(int id)
         {
             Comment comment =  _commentRepository.GetCommentById(id);
+            if (comment == null)
+            {
+                return NotFound();
+            }
             return View(comment);
         }
 
