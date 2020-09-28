@@ -94,7 +94,7 @@ namespace TabloidMVC.Controllers
                 return View(vm);
             }
         }
-
+        
         public IActionResult Edit(int id)
         {
             var post = new Post();
