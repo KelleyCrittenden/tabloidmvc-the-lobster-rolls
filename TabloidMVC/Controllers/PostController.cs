@@ -6,6 +6,9 @@ using System.Security.Claims;
 using TabloidMVC.Models.ViewModels;
 using TabloidMVC.Repositories;
 using TabloidMVC.Models;
+using System.Collections.Generic;
+using System;
+
 namespace TabloidMVC.Controllers
 {
     [Authorize]
@@ -13,12 +16,15 @@ namespace TabloidMVC.Controllers
     {
         private readonly IPostRepository _postRepository;
         private readonly ICategoryRepository _categoryRepository;
-        
+        private readonly IPostTagRepository _postTagRepository;
 
-        public PostController(IPostRepository postRepository, ICategoryRepository categoryRepository)
+
+
+        public PostController(IPostRepository postRepository, ICategoryRepository categoryRepository, IPostTagRepository postTagRepository)
         {
             _postRepository = postRepository;
             _categoryRepository = categoryRepository;
+            _postTagRepository = postTagRepository;
         }
 
         public IActionResult Index()
@@ -35,17 +41,31 @@ namespace TabloidMVC.Controllers
 
         public IActionResult Details(int id)
         {
-            var post = _postRepository.GetPublishedPostById(id);
+
+                var post = new Post();
+
+                post = _postRepository.GetPublishedPostById(id);
+
             if (post == null)
             {
-                int userId = GetCurrentUserProfileId();
-                post = _postRepository.GetUserPostById(id, userId);
-                if (post == null)
-                {
-                    return NotFound();
-                }
+                
+            
+            
+
+
+              
+          
+            
+
+           
+                return NotFound();
             }
-            return View(post);
+            else
+            {
+                post.TagNames = _postTagRepository.GetAllPostTagsByPostId(id);
+                return View(post);
+            }
+            
         }
 
         public IActionResult Create()

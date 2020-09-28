@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
@@ -35,10 +36,7 @@ namespace TabloidMVC.Models
         public int UserProfileId { get; set; }
         public UserProfile UserProfile { get; set; }
 
-        
-
-        
-
+        public List<PostTag> TagNames { get; set; }
         public double calculateReadTime()
         {
             double time = 0;
